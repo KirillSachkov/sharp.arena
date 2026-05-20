@@ -8,13 +8,16 @@ Scaffold only. Anyone clones the repo, runs `./scripts/dev.sh up`, and gets
 a Postgres + backend + frontend up. Nothing visible to a user yet beyond a
 landing page and a `/health` endpoint.
 
-- [x] `backend/ArenaApi/` — 5 projects compile with `TreatWarningsAsErrors`.
+- [x] `backend/ArenaApi/` — projects compile with `TreatWarningsAsErrors`.
 - [x] `GET /health` returns `{ "status": "ok" }`.
 - [x] `frontend/` — Next.js 16 builds, lints clean, FSD layers enforced.
 - [x] Landing page in Sharp Arena palette.
 - [x] `docker compose up` brings up postgres + backend + frontend.
 - [x] `docs/` — ARCHITECTURE, VISUAL, ROADMAP, art-style, ops.
 - [x] `.claude/rules/` — conventions auto-loaded.
+- [x] Modular monolith — 3 modules (Content/Execution/Progress) + IdentityStub.
+- [x] Wolverine + RabbitMQ + Postgres durable outbox wired end-to-end.
+- [x] Redis registered (not actively used yet).
 - [ ] `runners/csharp/Dockerfile` — stub only (Phase 1 makes it real).
 
 ## Phase 1 — Arena MVP
