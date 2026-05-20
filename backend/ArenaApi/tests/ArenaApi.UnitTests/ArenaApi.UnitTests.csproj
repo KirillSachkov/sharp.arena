@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="NetArchTest.Rules" />
     <PackageReference Include="coverlet.collector" />
     <PackageReference Include="xunit" />
     <PackageReference Include="xunit.runner.visualstudio">
@@ -16,6 +17,5 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\ArenaApi.Core\ArenaApi.Core.csproj" />
-    <ProjectReference Include="..\..\src\ArenaApi.Domain\ArenaApi.Domain.csproj" />
   </ItemGroup>
 </Project>

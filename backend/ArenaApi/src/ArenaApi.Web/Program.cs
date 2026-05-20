@@ -1,12 +1,6 @@
-using ArenaApi.Core;
 using ArenaApi.Core.Features.Health;
-using ArenaApi.Infrastructure.Postgres;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
-
-builder.Services
-    .AddCore(builder.Configuration)
-    .AddInfrastructurePostgres(builder.Configuration);
 
 builder.Services.AddOpenApi();
 

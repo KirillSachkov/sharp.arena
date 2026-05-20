@@ -9,6 +9,7 @@
     <PackageReference Include="Microsoft.NET.Test.Sdk" />
     <PackageReference Include="Respawn" />
     <PackageReference Include="Testcontainers.PostgreSql" />
+    <PackageReference Include="Testcontainers.RabbitMq" />
     <PackageReference Include="coverlet.collector" />
     <PackageReference Include="xunit" />
     <PackageReference Include="xunit.runner.visualstudio">
@@ -19,6 +20,5 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\ArenaApi.Web\ArenaApi.Web.csproj" />
-    <ProjectReference Include="..\..\src\ArenaApi.Infrastructure.Postgres\ArenaApi.Infrastructure.Postgres.csproj" />
   </ItemGroup>
 </Project>

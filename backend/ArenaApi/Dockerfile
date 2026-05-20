@@ -18,8 +18,7 @@ COPY [".globalconfig", "."]
 
 COPY ["ArenaApi/src/ArenaApi.Contracts/ArenaApi.Contracts.csproj", "ArenaApi/src/ArenaApi.Contracts/"]
 COPY ["ArenaApi/src/ArenaApi.Core/ArenaApi.Core.csproj", "ArenaApi/src/ArenaApi.Core/"]
-COPY ["ArenaApi/src/ArenaApi.Domain/ArenaApi.Domain.csproj", "ArenaApi/src/ArenaApi.Domain/"]
-COPY ["ArenaApi/src/ArenaApi.Infrastructure.Postgres/ArenaApi.Infrastructure.Postgres.csproj", "ArenaApi/src/ArenaApi.Infrastructure.Postgres/"]
+COPY ["ArenaApi/src/ArenaApi.Infrastructure/ArenaApi.Infrastructure.csproj", "ArenaApi/src/ArenaApi.Infrastructure/"]
 COPY ["ArenaApi/src/ArenaApi.Web/ArenaApi.Web.csproj", "ArenaApi/src/ArenaApi.Web/"]
 
 RUN --mount=type=cache,id=nuget-global,target=/root/.nuget/packages,sharing=locked \
