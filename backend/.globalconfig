@@ -40,6 +40,8 @@ dotnet_diagnostic.CA1031.severity = none
 dotnet_diagnostic.CA1054.severity = none
 dotnet_diagnostic.CA1056.severity = none
 dotnet_diagnostic.CA2234.severity = none
+# Reserved-keyword identifiers — modular-monolith uses Shared/ namespace and an Error record by design
+dotnet_diagnostic.CA1716.severity = none
 
 # ==============================================================================
 # Meziantou.Analyzer — MA rules
