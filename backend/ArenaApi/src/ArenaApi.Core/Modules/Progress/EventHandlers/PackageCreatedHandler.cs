@@ -7,7 +7,7 @@ namespace ArenaApi.Core.Modules.Progress.EventHandlers;
 /// and logs that it received it. In later phases this will write a row to
 /// arena_progress.package_progress to track per-user enrollment, but the
 /// listener wiring is identical — only the body grows.
-internal static partial class PackageCreatedHandler
+public static partial class PackageCreatedHandler
 {
     public static void Handle(PackageCreated message, ILogger<PackageCreatedHandlerLogCategory> logger)
     {
@@ -20,5 +20,5 @@ internal static partial class PackageCreatedHandler
         Message = "Progress module received PackageCreated for {PackageId} ({Slug})")]
     private static partial void LogReceived(ILogger logger, Guid packageId, string slug);
 
-    internal sealed class PackageCreatedHandlerLogCategory;
+    public sealed class PackageCreatedHandlerLogCategory;
 }
