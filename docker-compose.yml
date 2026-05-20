@@ -1,0 +1,55 @@
+services:
+  postgres:
+    image: postgres:17-alpine
+    container_name: arena-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-arena}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-arena}
+      POSTGRES_DB: ${POSTGRES_DB:-sharp_arena}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./docker/postgres/init.sql:/docker-entrypoint-initdb.d/00-init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-arena} -d ${POSTGRES_DB:-sharp_arena}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+
+  backend:
+    image: sharp-arena/arena-api:dev
+    build:
+      context: ./backend
+      dockerfile: ArenaApi/Dockerfile
+    container_name: arena-api
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT:-Docker}
+      ConnectionStrings__Database: "Host=postgres;Port=5432;Database=${POSTGRES_DB:-sharp_arena};Username=${POSTGRES_USER:-arena};Password=${POSTGRES_PASSWORD:-arena};Search Path=arena,public"
+    ports:
+      - "${ARENA_API_PORT:-5000}:5000"
+
+  frontend:
+    image: sharp-arena/frontend:dev
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:5000/api}
+        NEXT_PUBLIC_APP_URL: ${NEXT_PUBLIC_APP_URL:-http://localhost:3000}
+    container_name: arena-frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - "${FRONTEND_PORT:-3000}:3000"
+
+volumes:
+  postgres_data:
+    name: arena_postgres_data

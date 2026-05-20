@@ -1,0 +1,62 @@
+# Global analyzer config — picked up automatically by the SDK when named
+# `.globalconfig` at backend/. Higher priority than .editorconfig for
+# dotnet_diagnostic.* severities. .editorconfig keeps code-style rules only.
+#
+# Policy: every rule is either ENFORCED (error) or DISABLED (none) with a
+# documented reason. No open-ended "suggestion" rules — they rot to noise.
+
+is_global = true
+
+# ==============================================================================
+# Microsoft CA rules — disabled
+# ==============================================================================
+# Nullable reference types handle null checks
+dotnet_diagnostic.CA1062.severity = none
+# False positives on DI-instantiated classes
+dotnet_diagnostic.CA1812.severity = none
+# ConfigureAwait irrelevant for ASP.NET Core
+dotnet_diagnostic.CA2007.severity = none
+# Public types needed for cross-project access
+dotnet_diagnostic.CA1515.severity = none
+# Concrete type suggestion conflicts with DI
+dotnet_diagnostic.CA1859.severity = none
+# Underscore in test method names — tests also suppress in Directory.Build.props
+dotnet_diagnostic.CA1707.severity = none
+# Nested types — vertical slice pattern (Command/Handler in one file)
+dotnet_diagnostic.CA1034.severity = none
+# Static on generic types — Result<T> pattern
+dotnet_diagnostic.CA1000.severity = none
+# Mark as static — conflicts with DI/test patterns
+dotnet_diagnostic.CA1822.severity = none
+# Constant arrays — marginal perf, noisy in test-like patterns
+dotnet_diagnostic.CA1861.severity = none
+# LoggerMessage source gen — valuable, too noisy to enforce in bootstrap
+dotnet_diagnostic.CA1848.severity = none
+# Unused params — framework signatures (CancellationToken, HttpContext)
+dotnet_diagnostic.IDE0060.severity = none
+# General catch — intentional in health checks
+dotnet_diagnostic.CA1031.severity = none
+# URI string params — codebase uses strings for URLs by convention
+dotnet_diagnostic.CA1054.severity = none
+dotnet_diagnostic.CA1056.severity = none
+dotnet_diagnostic.CA2234.severity = none
+
+# ==============================================================================
+# Meziantou.Analyzer — MA rules
+# ==============================================================================
+# ConfigureAwait — not needed for ASP.NET Core
+dotnet_diagnostic.MA0004.severity = none
+# Sealed classes — too aggressive for EF DbContexts and DDD entities
+dotnet_diagnostic.MA0053.severity = none
+# Method length — vertical slice handlers are intentionally long
+dotnet_diagnostic.MA0051.severity = none
+# TODO/FIXME/HACK — signposts, not defects
+dotnet_diagnostic.MA0026.severity = none
+
+# ==============================================================================
+# Roslynator — RCS rules
+# ==============================================================================
+# ConfigureAwait
+dotnet_diagnostic.RCS1090.severity = none
+# var preference is set in .editorconfig
+dotnet_diagnostic.RCS1012.severity = none

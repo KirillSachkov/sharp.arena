@@ -1,0 +1,43 @@
+{
+  "name": "frontend",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --turbopack",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "prepare": "[ -d ../.git ] && cd .. && husky frontend/.husky || true"
+  },
+  "lint-staged": {
+    "**/*.{ts,tsx,js,jsx}": [
+      "eslint --fix --max-warnings=0",
+      "prettier --write"
+    ],
+    "**/*.{json,md,yml,yaml,css}": [
+      "prettier --write"
+    ]
+  },
+  "dependencies": {
+    "next": "^16.2.6",
+    "react": "19.2.4",
+    "react-dom": "19.2.4"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "babel-plugin-react-compiler": "1.0.0",
+    "eslint": "^9",
+    "eslint-config-next": "^16.2.6",
+    "eslint-plugin-boundaries": "^6.0.2",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.4.0",
+    "prettier": "^3.8.3",
+    "tailwindcss": "^4",
+    "typescript": "^5"
+  }
+}

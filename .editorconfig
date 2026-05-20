@@ -1,0 +1,34 @@
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+indent_style = space
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+[*.cs]
+indent_size = 4
+
+[*.{ts,tsx,js,jsx,json,yml,yaml,html,css,scss}]
+indent_size = 2
+
+[*.{md,mdx}]
+trim_trailing_whitespace = false
+
+[*.csproj]
+indent_size = 2
+
+[*.{props,targets,slnx}]
+indent_size = 2
+
+# Roslynator
+roslynator_configure_await = false
+
+# Naming: constants PascalCase, static fields s_ prefix
+dotnet_naming_rule.constants_pascal.severity = warning
+dotnet_naming_rule.constants_pascal.symbols = constants_symbol
+dotnet_naming_rule.constants_pascal.style = pascal_style
+dotnet_naming_symbols.constants_symbol.applicable_kinds = field
+dotnet_naming_symbols.constants_symbol.required_modifiers = const
+dotnet_naming_style.pascal_style.capitalization = pascal_case

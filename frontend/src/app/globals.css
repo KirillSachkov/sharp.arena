@@ -1,0 +1,46 @@
+@import "tailwindcss";
+
+/*
+ * Sharp Arena design tokens. See docs/VISUAL.md for the full palette spec.
+ * Tailwind 4 reads tokens from this `@theme` block — utilities like
+ * `bg-deep`, `text-primary`, `border-border-subtle` are generated from these.
+ */
+@theme {
+  --color-bg-deep: #0d1424;
+  --color-bg-panel: #161b2e;
+  --color-bg-elevated: #1f2640;
+  --color-border-subtle: #2a3050;
+
+  --color-text: #e4e6f0;
+  --color-text-dim: #8b91a8;
+  --color-text-muted: #5a6080;
+
+  --color-primary: #a855f7;
+  --color-primary-soft: #c084fc;
+  --color-accent-gold: #fbbf24;
+  --color-accent-green: #22c55e;
+  --color-accent-red: #ef4444;
+  --color-accent-cyan: #06b6d4;
+
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-mono:
+    var(--font-jetbrains-mono), ui-monospace, "JetBrains Mono",
+    "SFMono-Regular", monospace;
+  --font-display: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+}
+
+:root {
+  color-scheme: dark;
+}
+
+body {
+  background: var(--color-bg-deep);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+}
+
+/* All pixel-art assets must render with pixelated scaling. */
+img.pixel-art,
+[data-pixel-art="true"] img {
+  image-rendering: pixelated;
+}

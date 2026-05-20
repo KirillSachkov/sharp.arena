@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="CSharpFunctionalExtensions" />
+    <PackageReference Include="FluentValidation" />
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ArenaApi.Contracts\ArenaApi.Contracts.csproj" />
+    <ProjectReference Include="..\ArenaApi.Domain\ArenaApi.Domain.csproj" />
+  </ItemGroup>
+</Project>

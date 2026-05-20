@@ -1,0 +1,19 @@
+# Banned API list — enforced by Microsoft.CodeAnalysis.BannedApiAnalyzers (RS0030)
+# Format: {documentation comment ID};{reason}
+# Test projects are exempt (RS0030/RS0031 suppressed via Directory.Build.props)
+
+# Use Guid.CreateVersion7() for time-ordered UUIDs (project convention)
+M:System.Guid.NewGuid();Use Guid.CreateVersion7() for time-ordered UUIDs
+
+# Use Task.Delay instead of blocking the thread
+M:System.Threading.Thread.Sleep(System.Int32);Use Task.Delay() instead of Thread.Sleep()
+M:System.Threading.Thread.Sleep(System.TimeSpan);Use Task.Delay() instead of Thread.Sleep()
+
+# Don't throw System.Exception directly — use specific types or Result<T, Error>
+M:System.Exception.#ctor();Use a specific exception type or return Result<T, Error>
+M:System.Exception.#ctor(System.String);Use a specific exception type or return Result<T, Error>
+M:System.Exception.#ctor(System.String,System.Exception);Use a specific exception type or return Result<T, Error>
+
+# Don't use Console.Write* — use ILogger
+M:System.Console.WriteLine(System.String);Use ILogger instead of Console
+M:System.Console.Write(System.String);Use ILogger instead of Console
