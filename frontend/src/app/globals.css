@@ -26,7 +26,23 @@
   --font-mono:
     var(--font-jetbrains-mono), ui-monospace, "JetBrains Mono",
     "SFMono-Regular", monospace;
-  --font-display: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  /*
+   * Display = pixel-RPG headings, brand, labels, buttons, badges.
+   *
+   * Chain: Press Start 2P (Latin/Latin-Ext, iconic 8-bit NES) → Pixellari
+   * (local, fills Cyrillic where PS2P has no glyph) → Inter → system.
+   * Browser per-glyph-falls-back, so English/digits/symbols use PS2P and
+   * Russian letters drop into Pixellari without changing markup.
+   *
+   * Long body copy, the code editor, problem statements, tests output and
+   * tabular data stay on `font-sans` (Inter) or `font-mono` (JetBrains Mono).
+   *
+   * `font-pixel` is an alias for the same chain.
+   */
+  --font-display:
+    var(--font-press-start), var(--font-pixellari), var(--font-inter),
+    ui-sans-serif, system-ui, sans-serif;
+  --font-pixel: var(--font-display);
 }
 
 :root {
@@ -43,4 +59,25 @@ body {
 img.pixel-art,
 [data-pixel-art="true"] img {
   image-rendering: pixelated;
+}
+
+/*
+ * Any uppercase chrome label (panel titles, page headers, buttons, badges,
+ * stat labels, etc.) gets the pixel-RPG display font automatically.
+ *
+ * `body` prefix raises specificity above Tailwind's `font-mono` utility, so
+ * components that combine `font-mono` with `uppercase` for tracked labels
+ * still pick up the pixel font without per-file edits. Body copy is never
+ * uppercase in this app, so long-form readability is preserved (Inter).
+ *
+ * Opt out with the explicit `font-pixel` class (Pixelify Sans, friendlier
+ * at hero sizes) or `font-mono` paired with non-uppercase text.
+ */
+body .uppercase {
+  font-family: var(--font-display);
+}
+
+/* Hero / display text — always wins, even over the .uppercase rule above. */
+body .font-pixel {
+  font-family: var(--font-pixel);
 }

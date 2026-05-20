@@ -3,10 +3,8 @@
 .env.*
 !.env.example
 
-# Claude Code — track rules + project memory, ignore local settings
-.claude/settings.local.json
-.claude/agent-memory/
-.claude/worktrees/
+# Claude Code — the entire .claude/ directory is local-only (this repo is public).
+.claude/
 .worktrees/
 
 # NuGet credentials

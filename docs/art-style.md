@@ -74,3 +74,10 @@ frontend/public/art/trophy/victory-default.png
 ```
 
 kebab-case, no spaces, native pixel size implied by the slot.
+
+## Live slot inventory
+
+The dashboard already wires every art spot through
+`<PixelArtSlot slot="..." />`. The full catalog of slot keys, native sizes,
+and code locations lives in [`frontend/public/art/SLOTS.md`](../frontend/public/art/SLOTS.md)
+— update that table whenever you add a new slot or generate an asset.
