@@ -18,6 +18,38 @@ services:
       retries: 10
       start_period: 10s
 
+  rabbitmq:
+    image: rabbitmq:3.13-management-alpine
+    container_name: arena-rabbitmq
+    restart: unless-stopped
+    pull_policy: always
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER:-arena}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD:-arena}
+    ports:
+      - "${RABBITMQ_PORT:-5672}:5672"
+      - "${RABBITMQ_MGMT_PORT:-15672}:15672"
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+
+  redis:
+    image: redis:7-alpine
+    container_name: arena-redis
+    restart: unless-stopped
+    pull_policy: always
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 5s
+
   backend:
     image: ${DOCKER_REGISTRY}/arena-api:${IMAGE_TAG:-latest}
     container_name: arena-api
@@ -26,9 +58,15 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
     environment:
       ASPNETCORE_ENVIRONMENT: Production
-      ConnectionStrings__Database: "Host=postgres;Port=5432;Database=${POSTGRES_DB};Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD};Search Path=arena,public"
+      ConnectionStrings__Database: "Host=postgres;Port=5432;Database=${POSTGRES_DB};Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD}"
+      ConnectionStrings__RabbitMq: "amqp://${RABBITMQ_USER:-arena}:${RABBITMQ_PASSWORD:-arena}@rabbitmq:5672/"
+      ConnectionStrings__Redis: "redis:6379"
     ports:
       - "5000:5000"
 
