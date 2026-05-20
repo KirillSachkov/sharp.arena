@@ -6,11 +6,18 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+
+    <PackageReference Include="WolverineFx" />
+    <PackageReference Include="WolverineFx.RabbitMQ" />
+    <PackageReference Include="WolverineFx.Postgresql" />
+    <PackageReference Include="WolverineFx.EntityFrameworkCore" />
+
+    <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Hybrid" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\ArenaApi.Core\ArenaApi.Core.csproj" />
-    <ProjectReference Include="..\ArenaApi.Domain\ArenaApi.Domain.csproj" />
-    <ProjectReference Include="..\ArenaApi.Infrastructure.Postgres\ArenaApi.Infrastructure.Postgres.csproj" />
+    <ProjectReference Include="..\ArenaApi.Infrastructure\ArenaApi.Infrastructure.csproj" />
   </ItemGroup>
 </Project>

@@ -2,8 +2,7 @@
   <Folder Name="/ArenaApi/">
     <Project Path="ArenaApi/src/ArenaApi.Contracts/ArenaApi.Contracts.csproj" />
     <Project Path="ArenaApi/src/ArenaApi.Core/ArenaApi.Core.csproj" />
-    <Project Path="ArenaApi/src/ArenaApi.Domain/ArenaApi.Domain.csproj" />
-    <Project Path="ArenaApi/src/ArenaApi.Infrastructure.Postgres/ArenaApi.Infrastructure.Postgres.csproj" />
+    <Project Path="ArenaApi/src/ArenaApi.Infrastructure/ArenaApi.Infrastructure.csproj" />
     <Project Path="ArenaApi/src/ArenaApi.Web/ArenaApi.Web.csproj" />
   </Folder>
   <Folder Name="/ArenaApi/tests/">

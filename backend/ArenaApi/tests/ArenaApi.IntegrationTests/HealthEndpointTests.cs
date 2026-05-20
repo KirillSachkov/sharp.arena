@@ -1,22 +1,18 @@
 using System.Net;
-using System.Net.Http;
-using System.Threading.Tasks;
-using ArenaApi.Web;
-using Microsoft.AspNetCore.Mvc.Testing;
+using ArenaApi.IntegrationTests.Infrastructure;
+using ArenaApi.IntegrationTests.Modules.Content;
 using Xunit;
 
 namespace ArenaApi.IntegrationTests;
 
-public class HealthEndpointTests : IClassFixture<WebApplicationFactory<Program>>
+[Collection(nameof(IntegrationTestsCollection))]
+public sealed class HealthEndpointTests
 {
-    private readonly WebApplicationFactory<Program> _factory;
+    private readonly IntegrationTestsWebFactory _factory;
 
-    public HealthEndpointTests(WebApplicationFactory<Program> factory)
-    {
-        _factory = factory;
-    }
+    public HealthEndpointTests(IntegrationTestsWebFactory factory) => _factory = factory;
 
-    [Fact(Skip = "Wired in Phase 1 once Testcontainers Postgres is required end-to-end.")]
+    [Fact]
     public async Task HealthReturnsOk()
     {
         HttpClient client = _factory.CreateClient();

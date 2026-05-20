@@ -1,0 +1,4 @@
+# EF Core-generated migration files prefix the class name with a timestamp,
+# which MA0048 (file name must match type name) flags as a violation.
+[*.cs]
+dotnet_diagnostic.MA0048.severity = none
