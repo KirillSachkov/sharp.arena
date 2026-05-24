@@ -2,19 +2,8 @@ import Link from "next/link";
 import { ChevronRight, Sparkles } from "lucide-react";
 import { Chip, DifficultyBadge, TaskStatusPill } from "@/shared/ui";
 import { cn } from "@/shared/lib/cn";
-import type { TaskSummary, TaskTopic } from "../types";
-
-const TOPIC_LABEL: Record<TaskTopic, string> = {
-  arrays: "Массивы",
-  strings: "Строки",
-  "hash-map": "Хеш-таблица",
-  "linked-list": "Связный список",
-  "binary-search": "Бинарный поиск",
-  "dynamic-programming": "ДП",
-  graphs: "Графы",
-  trees: "Деревья",
-  math: "Математика",
-};
+import { TOPIC_LABEL } from "../topic-label";
+import type { TaskSummary } from "../types";
 
 export function TaskListRow({
   task,
@@ -44,7 +33,8 @@ export function TaskListRow({
             </Chip>
           ))}
           <span className="ml-1 hidden font-mono text-[10px] uppercase tracking-[0.18em] text-text-muted sm:inline">
-            {task.acceptanceRate.toFixed(1).replace(".", ",")}% точн. · решили {task.solvedBy.toLocaleString()}
+            {task.acceptanceRate.toFixed(1).replace(".", ",")}% точн. · решили{" "}
+            {task.solvedBy.toLocaleString()}
           </span>
         </div>
       </div>

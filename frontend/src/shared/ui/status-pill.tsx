@@ -18,6 +18,10 @@ const taskStyles: Record<TaskStatus, { label: string; className: string }> = {
     label: "Идеально",
     className: "border-accent-gold/40 bg-accent-gold/15 text-accent-gold",
   },
+  locked: {
+    label: "Закрыто",
+    className: "border-border-subtle bg-bg-elevated/60 text-text-muted",
+  },
 };
 
 const testStyles: Record<TestStatus, { label: string; className: string }> = {

@@ -1,75 +1,56 @@
 import type { Metadata } from "next";
-import { LayoutGrid, ListChecks, Trophy } from "lucide-react";
+import { MOCK_TASKS, MOCK_TOTAL_TASKS } from "@/entities/task";
+import { MOCK_COLLECTIONS } from "@/entities/collection";
 import {
-  Panel,
-  PanelHeader,
-  PanelBody,
-  PageHeader,
-  StatTile,
-} from "@/shared/ui";
-import { MOCK_TASKS, TaskListRow } from "@/entities/task";
-import { ArenaFilterBar } from "@/widgets/arena-catalog";
+  ArenaCollectionsSidebar,
+  ArenaFiltersSidebar,
+  ArenaPageHero,
+  ArenaPagination,
+  ArenaTasksTable,
+  ArenaToolbar,
+} from "@/widgets/arena-catalog";
+import { SiteFooter } from "@/widgets/dashboard";
 
 export const metadata: Metadata = {
   title: "Арена",
+  description:
+    "Каталог практических задач Sharp Arena — фундаменты C#, ASP.NET Core, WebSockets, EF Core и подготовка к собеседованиям.",
 };
 
 export default function ArenaPage() {
-  const total = MOCK_TASKS.length;
-  const solved = MOCK_TASKS.filter(
-    (t) => t.status === "solved" || t.status === "perfect",
-  ).length;
-  const totalXp = MOCK_TASKS.filter(
-    (t) => t.status === "solved" || t.status === "perfect",
-  ).reduce((acc, t) => acc + t.xpReward, 0);
-
   return (
-    <div className="space-y-5">
-      <Panel className="overflow-hidden">
-        <PageHeader title="Арена" subtitle="Свободная практика" />
-        <PanelBody className="grid grid-cols-1 gap-3 md:grid-cols-3">
-          <StatTile
-            label="Задач доступно"
-            value={total}
-            tone="purple"
-            icon={<LayoutGrid className="size-4" aria-hidden />}
-          />
-          <StatTile
-            label="Решено"
-            value={`${solved}/${total}`}
-            tone="green"
-            icon={<ListChecks className="size-4" aria-hidden />}
-          />
-          <StatTile
-            label="XP за арену"
-            value={`${totalXp.toLocaleString()} XP`}
-            tone="gold"
-            icon={<Trophy className="size-4" aria-hidden />}
-          />
-        </PanelBody>
-      </Panel>
-
-      <Panel>
-        <PanelBody className="space-y-4">
-          <ArenaFilterBar />
-        </PanelBody>
-      </Panel>
-
-      <Panel className="overflow-hidden">
-        <PanelHeader
-          title="Сражения"
-          trailing={
-            <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-text-muted">
-              {total} задач
-            </span>
-          }
+    <div className="flex flex-col gap-6">
+      <section className="relative overflow-hidden rounded-2xl border border-border-subtle bg-gradient-to-br from-bg-panel via-bg-panel to-bg-elevated/60 p-5 shadow-[0_0_120px_-60px_var(--color-primary)] sm:p-6">
+        <div
+          aria-hidden
+          className="pointer-events-none absolute -right-24 -top-24 size-72 rounded-full bg-primary/10 blur-3xl"
         />
-        <PanelBody className="p-0">
-          {MOCK_TASKS.map((task) => (
-            <TaskListRow key={task.id} task={task} />
-          ))}
-        </PanelBody>
-      </Panel>
+        <div className="relative flex flex-col gap-5 lg:flex-row lg:items-start lg:gap-6">
+          <ArenaPageHero />
+          <div className="flex min-w-0 flex-1 flex-col">
+            <ArenaToolbar />
+          </div>
+        </div>
+      </section>
+
+      <div className="grid grid-cols-1 gap-5 xl:grid-cols-[14rem_minmax(0,1fr)_17.5rem]">
+        <ArenaFiltersSidebar className="xl:sticky xl:top-20" />
+
+        <div className="flex min-w-0 flex-col gap-4">
+          <ArenaTasksTable
+            tasks={MOCK_TASKS.slice(0, 10)}
+            totalCount={MOCK_TOTAL_TASKS}
+          />
+          <ArenaPagination shown={10} total={MOCK_TOTAL_TASKS} />
+        </div>
+
+        <ArenaCollectionsSidebar
+          collections={MOCK_COLLECTIONS}
+          className="xl:sticky xl:top-20"
+        />
+      </div>
+
+      <SiteFooter />
     </div>
   );
 }

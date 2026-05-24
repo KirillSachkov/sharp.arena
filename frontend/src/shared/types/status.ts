@@ -4,7 +4,8 @@ export type TaskStatus =
   | "not-started"
   | "in-progress"
   | "solved"
-  | "perfect";
+  | "perfect"
+  | "locked";
 
 export type TestStatus = "passed" | "failed" | "pending";
 
