@@ -51,18 +51,16 @@ Timeout | OutOfMemory | RunnerError`.
 
 ## Modular monolith
 
-Single backend process. Each module is a set of separate csproj projects
+Single backend process. Each module is a set of csproj projects
+(`ArenaApi.Modules.<Name>.{Contracts, Domain, Core, Infrastructure.Postgres}`),
 wired into one DI container by `ArenaApi.Web`. Module isolation is
-**compiler-enforced** via the `csproj` ProjectReference graph — a direct
-reference from one module to another module's `Domain`, `Application`, or
-`Infrastructure.Postgres` assembly fails `dotnet build`. The only legal
-cross-module reference is to another module's `Public` project.
+**compiler-enforced** via the `csproj` ProjectReference graph — no NetArchTest.
 
 Each module owns:
 
 - its own Postgres schema (`arena_<module>`),
-- its own EF Core `DbContext` (never shared),
-- four csproj projects under `src/Modules/<Name>/`.
+- its own EF Core `DbContext` (in its `Infrastructure.Postgres` project — never in Core),
+- its own `Contracts` project as the only surface other modules may reference.
 
 | Module        | Schema             | Owns                                                  |
 | ------------- | ------------------ | ----------------------------------------------------- |
@@ -72,80 +70,74 @@ Each module owns:
 | IdentityStub  | `arena_identity`   | `ICurrentUser` — hardcoded `Guid` (stub until SSO)    |
 
 Phase 0 implements **Content** fully and ships **Execution** and **Progress**
-as skeletons (DbContext + outbox service only). **IdentityStub** is fully
-wired but currently unused by callers.
+as skeletons (DbContext + OutboxService + TransactionManager only).
+**IdentityStub** is fully wired but currently unused by callers.
 
 ### Project layout
 
-| Project                                                                | Owns                                                                                  |
-| ---------------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
-| `ArenaApi.Web`                                                         | Minimal API host, `Program.cs`, Wolverine wiring, Health, module registration        |
-| `ArenaApi.SharedKernel`                                                | Cross-cutting primitives (Error, IClock, IDomainEvent, IOutboxService, ConnectionStringNames) |
-| `ArenaApi.Contracts`                                                   | HTTP DTOs (per-module subfolders, no Domain dependency)                               |
-| `ArenaApi.Modules.<Name>.Public`                                       | Cross-module surface: `I<Name>Reader`, view DTOs, integration events                  |
-| `ArenaApi.Modules.<Name>.Domain`                                       | Aggregates, value objects, domain events                                              |
-| `ArenaApi.Modules.<Name>.Application`                                  | `<Name>DbContext`, EF configs, handlers, endpoints, `<Name>OutboxService`             |
-| `ArenaApi.Modules.<Name>.Infrastructure.Postgres`                      | Migrations, DesignTimeFactory, `<Name>Reader` (Public impl), `Add<Name>Module` ext.  |
+| Project                                                                               | Owns                                                                              |
+| ------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
+| `ArenaApi.Web`                                                                        | Minimal API host, `Program.cs`, Wolverine wiring, auto-discovery via `AddHandlers/AddValidatorsFromAssembly/AddEndpoints` |
+| `ArenaApi.SharedKernel`                                                               | Cross-cutting primitives + abstractions: `ICommand`, `ICommandHandler`, `IQuery`, `IQueryHandler`, `ITransactionManager`, `IEndpoint`, `Error`, `IClock`, `IDomainEvent`, `ConnectionStringNames` |
+| `ArenaApi.Modules.<Name>.Contracts`                                                   | Cross-module surface: HTTP DTOs, `I<X>Reader`, view DTOs, integration events      |
+| `ArenaApi.Modules.<Name>.Domain`                                                      | Aggregates, value objects, domain events (Content only; skeletons skip this)      |
+| `ArenaApi.Modules.<Name>.Core`                                                        | `Database/` (repository + outbox interfaces), `Features/<Area>/UseCases/<Action>.cs` (vertical slice) |
+| `ArenaApi.Modules.<Name>.Infrastructure.Postgres`                                     | `<Name>DbContext`, EF `Configurations/`, repository impls, `Database/TransactionManager`, `OutboxService` impl, `DependencyInjectionExtensions.Add<Name>Infrastructure`, `Migrations/` |
 
-**DbContext lives in Application** — vertical-slice convention; keeps
-Application→Infrastructure references one-way (Infrastructure.Postgres
-references Application to generate migrations, not the other way around).
-
-**`Add<Name>Module` lives in Infrastructure.Postgres** — registration
-extension needs visibility into both Application (DbContext, handlers) and
-the Postgres layer (migrations, Reader implementation).
-
-#### Reference graph
+#### Reference graph (one-way)
 
 ```
 SharedKernel        ← (no internal refs)
-Contracts           ← (no internal refs)
 
-Modules.Content.Public                       → SharedKernel
-Modules.Content.Domain                       → SharedKernel
-Modules.Content.Application                  → Domain, Public, Contracts, SharedKernel
-Modules.Content.Infrastructure.Postgres      → Domain, Application, SharedKernel
-
-Modules.Execution.Public                     → SharedKernel
-Modules.Execution.Application                → Public, SharedKernel
-Modules.Execution.Infrastructure.Postgres    → Application, SharedKernel
-
-Modules.Progress.Public                      → SharedKernel
-Modules.Progress.Application                 → Public, Content.Public, SharedKernel
-Modules.Progress.Infrastructure.Postgres     → Application, SharedKernel
-
-Modules.IdentityStub.Public                  → (none)
-Modules.IdentityStub.Application             → Public, SharedKernel
-Modules.IdentityStub.Infrastructure          → Application, Public
-
-Web → SharedKernel, Contracts, every module's Application + Infrastructure(.Postgres)
+Contracts           → SharedKernel
+Domain              → SharedKernel
+Core                → Domain, Contracts, SharedKernel
+Infrastructure.Postgres → Core, Domain, SharedKernel   [Domain only for Content]
+Web                 → SharedKernel, every module's Core + Infrastructure.Postgres + Contracts (transitively)
 ```
 
-`Progress.Application → Content.Public` is the **only** cross-module
-reference: `PackageCreatedHandler` subscribes to the `PackageCreated`
-integration event published by Content.
+`Progress.Core → Content.Contracts` is the **only** cross-module reference:
+`PackageCreatedHandler` subscribes to the `PackageCreated` integration event
+published by Content.
 
 #### Vertical slice convention inside a module
 
-```
-src/Modules/<Module>/ArenaApi.Modules.<Module>.Application/Features/<Action><Name>/
-├── <Action><Name>Command.cs       # or Query
-├── <Action><Name>Handler.cs       # returns Result<T, Error>
-└── <Action><Name>Endpoint.cs      # minimal API mapping
-```
+`<Module>.Core/Features/<Area>/UseCases/<Action>.cs` contains four public
+sealed classes in one file (requires `#pragma warning disable MA0048` at the
+top — Meziantou enforces one-type-per-file):
 
-Reads cross-module via `I<Module>Reader` (from the module's `Public`
-project) — no repository abstraction layer.
+```
+Modules/<Module>/ArenaApi.Modules.<Module>.Core/Features/<Area>/UseCases/<Action>.cs
+  <Action>Endpoint   : IEndpoint              — MinimalAPI route mapping
+  <Action>Command    : ICommand               — input record (or Query : IQuery)
+  <Action>Validator  : AbstractValidator<...> — FluentValidation rules
+  <Action>Handler    : ICommandHandler<TResp, <Action>Command>
+                       — depends on I<X>Repository + ITransactionManager + IValidator + IOutboxService + IClock
+                       — NEVER on DbContext directly
+```
 
 `Result<T, Error>` (from `CSharpFunctionalExtensions`) is the railway-oriented
 return type for handlers. No throwing for business outcomes.
+
+Endpoints implement `IEndpoint` (in `SharedKernel/Endpoints/`) and are
+auto-discovered by reflection — no manual wiring in `Program.cs`.
+
+#### Repository pattern
+
+Each module defines `I<X>Repository` in `<Module>.Core/Database/` and the
+implementation in `<Module>.Infrastructure.Postgres/<X>Repository.cs`.
+Handlers depend on the interface; DbContext is never injected into handlers.
+
+`ITransactionManager` (interface in `SharedKernel/Database/`, per-module impl
+in each `Infrastructure.Postgres/Database/TransactionManager.cs`) wraps
+`BeginTransactionAsync` / `CommitAsync` / `RollbackAsync`.
 
 ### Communication between modules
 
 Three legal paths, in order of preference:
 
 1. **Sync read via public contract.** A module exposes `I<Module>Reader`
-   in its `Public` project; other modules inject the interface. Read-only.
+   in its `Contracts` project; other modules inject the interface. Read-only.
    No mutations, no business logic — just projection.
 2. **Domain events (intra-module).** Aggregates raise `IDomainEvent` inside
    themselves; handlers in the same module react in the same DB transaction.
@@ -173,15 +165,15 @@ reader.
 - Transactional middleware: `opts.UseEntityFrameworkCoreTransactions()`
   wraps every module's `DbContext` so `SaveChangesAsync` and outbound
   envelopes commit atomically.
-- Per-module wrapper: `<Module>OutboxService` in
-  `src/Modules/<Module>/ArenaApi.Modules.<Module>.Application/`,
-  implementing the shared `IOutboxService` shape. Handlers inject the
-  concrete wrapper (not the interface) to avoid DI collisions between
-  modules.
+- Per-module outbox: `IOutboxService` interface in
+  `src/Modules/<Module>/ArenaApi.Modules.<Module>.Core/Database/IOutboxService.cs`;
+  `OutboxService` impl in
+  `src/Modules/<Module>/ArenaApi.Modules.<Module>.Infrastructure.Postgres/OutboxService.cs`.
+  Handlers inject via the module-scoped interface to avoid DI collisions.
 
 ### Identity is a stub
 
-`src/Modules/IdentityStub/ArenaApi.Modules.IdentityStub.Public/ICurrentUser.cs`
+`src/Modules/IdentityStub/ArenaApi.Modules.IdentityStub.Contracts/ICurrentUser.cs`
 exposes one property: `Guid UserId`. The implementation reads a hardcoded ID
 from `appsettings:IdentityStub:HardcodedUserId`. When real SSO arrives (via
 the education-platform integration), the implementation behind `ICurrentUser`
