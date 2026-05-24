@@ -6,4 +6,9 @@ namespace ArenaApi.Core.Modules.IdentityStub.Public;
 public interface ICurrentUser
 {
     Guid UserId { get; }
+
+    /// True when the current request is acting as an administrator. Backed
+    /// today by IdentityStubOptions.IsAdmin (single-tenant local dev). When
+    /// real SSO lands, this is driven by claims/roles instead.
+    bool IsAdmin { get; }
 }
