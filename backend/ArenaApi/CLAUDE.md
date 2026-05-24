@@ -92,10 +92,11 @@ durable outbox.
 
 ## Conventions
 
-- **Module boundaries** are enforced by `NetArchTest` in
-  `tests/ArenaApi.UnitTests/Architecture/ModuleBoundariesTests.cs`. Direct
-  references to another module's `Domain/`, `Features/`, or
-  `Infrastructure/` fail the build.
+- **Module boundaries** are compiler-enforced via the `csproj` ProjectReference
+  graph. Each module's internal layers (`Domain`, `Application`,
+  `Infrastructure.Postgres`) are separate projects; modules cannot reference
+  another module's internals at compile time. A forbidden cross-module type
+  reference fails `dotnet build`.
 - **Per-module schemas:** `arena_content`, `arena_execution`,
   `arena_progress`, `arena_identity`. Wolverine envelopes live in
   `arena_wolverine`. There is no global `arena` schema.
