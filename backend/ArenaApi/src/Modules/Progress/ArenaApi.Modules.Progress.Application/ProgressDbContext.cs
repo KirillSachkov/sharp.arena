@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 
-namespace ArenaApi.Core.Modules.Progress.Infrastructure;
+namespace ArenaApi.Modules.Progress.Application;
 
 public sealed class ProgressDbContext(DbContextOptions<ProgressDbContext> options) : DbContext(options)
 {
@@ -11,7 +11,7 @@ public sealed class ProgressDbContext(DbContextOptions<ProgressDbContext> option
         modelBuilder.HasDefaultSchema(SchemaName);
         modelBuilder.ApplyConfigurationsFromAssembly(
             typeof(ProgressDbContext).Assembly,
-            t => t.Namespace?.StartsWith("ArenaApi.Core.Modules.Progress.Infrastructure.Configurations", StringComparison.Ordinal) == true);
+            t => t.Namespace?.StartsWith("ArenaApi.Modules.Progress.Application.Configurations", StringComparison.Ordinal) == true);
         base.OnModelCreating(modelBuilder);
     }
 }

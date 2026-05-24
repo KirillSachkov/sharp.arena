@@ -1,5 +1,6 @@
 using ArenaApi.SharedKernel;
 using ArenaApi.Modules.Content.Application;
+using ArenaApi.Modules.Progress.Application;
 using Wolverine;
 using Wolverine.EntityFrameworkCore;
 using Wolverine.Postgresql;
@@ -58,6 +59,7 @@ public static class WolverineConfiguration
             // in the entry assembly (ArenaApi.Web). Wolverine 5.x scans the calling
             // assembly by default, so we must include Core explicitly.
             opts.Discovery.IncludeAssembly(typeof(ContentApplicationAssemblyMarker).Assembly);
+            opts.Discovery.IncludeAssembly(typeof(ProgressApplicationAssemblyMarker).Assembly);
         });
 
         return builder;

@@ -1,7 +1,7 @@
 using ArenaApi.Modules.Content.Public.IntegrationEvents;
 using Microsoft.Extensions.Logging;
 
-namespace ArenaApi.Core.Modules.Progress.EventHandlers;
+namespace ArenaApi.Modules.Progress.Application.EventHandlers;
 
 /// Phase 0 stub. Listens to PackageCreated published by the Content module
 /// and logs that it received it. In later phases this will write a row to

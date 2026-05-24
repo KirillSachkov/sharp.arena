@@ -1,7 +1,8 @@
+using ArenaApi.Modules.Progress.Application;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 
-namespace ArenaApi.Core.Modules.Progress.Infrastructure;
+namespace ArenaApi.Modules.Progress.Infrastructure.Postgres;
 
 internal sealed class ProgressDbContextDesignTimeFactory : IDesignTimeDbContextFactory<ProgressDbContext>
 {

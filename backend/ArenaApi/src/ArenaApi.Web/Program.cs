@@ -2,7 +2,7 @@ using ArenaApi.SharedKernel;
 using ArenaApi.Core.Features.Health;
 using ArenaApi.Modules.Execution.Infrastructure.Postgres;
 using ArenaApi.Core.Modules.IdentityStub;
-using ArenaApi.Core.Modules.Progress;
+using ArenaApi.Modules.Progress.Infrastructure.Postgres;
 using ArenaApi.Modules.Content.Application;
 using ArenaApi.Modules.Content.Infrastructure.Postgres;
 using ArenaApi.Web.Configuration;
