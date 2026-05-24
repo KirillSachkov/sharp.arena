@@ -5,8 +5,15 @@ Two anchor decisions drive the whole codebase.
 ## 1. One engine, two shells
 
 A single `tasks` table backs both modes. Arena = task packages. Story =
-chapters + chapter_tasks + narrative gating. Difference is navigation/UI,
-not the data model.
+**campaigns → acts → chapters → tasks** with narrative gating and
+interactive map navigation. Difference is navigation/UI and the
+campaign/act/chapter wrapper around tasks — the underlying task content
+and execution path are shared.
+
+The Story wrapper lives in its own module (`Modules/Story/`) with its
+own Postgres schema (`arena_story`). It reads tasks from Content via
+`IContentReader`. See [story-mode.md](./story-mode.md) for the full Story
+data model and API.
 
 ## 2. Multi-language by design
 
@@ -69,10 +76,12 @@ other folder is implementation detail, enforced by `NetArchTest` rules in
 | Execution     | `arena_execution`  | Runners, run requests, results, Docker sandbox        |
 | Progress      | `arena_progress`   | User attempts, completion, XP, scoreboard             |
 | IdentityStub  | `arena_identity`   | `ICurrentUser` — hardcoded `Guid` (stub until SSO)    |
+| Story         | `arena_story`      | Campaigns, acts, chapters, story inserts, map layouts |
 
 Phase 0 implements **Content** fully and ships **Execution** and **Progress**
 as skeletons (DbContext + outbox service only). **IdentityStub** is fully
-wired but currently unused by callers.
+wired but currently unused by callers. **Story** is specified in
+[story-mode.md](./story-mode.md) but no code lands until Phase 2.
 
 ### Project layout
 
@@ -157,6 +166,7 @@ boundaries. Cross-module reads flow through `I<Module>Reader`.
 | Schema              | Owner module  | Currently provisioned tables                          |
 | ------------------- | ------------- | ----------------------------------------------------- |
 | `arena_content`     | Content       | `packages` (Phase 0)                                  |
+| `arena_story`       | Story         | _none yet — designed only, lands in Phase 2_          |
 | `arena_execution`   | Execution     | _none yet — skeleton DbContext_                       |
 | `arena_progress`    | Progress      | _none yet — skeleton DbContext_                       |
 | `arena_identity`    | IdentityStub  | _none — stub user is config-only_                     |
@@ -176,12 +186,7 @@ arena_content.tasks
   problem_md, starter_code, harness_code, tests_code, solution_code,
   hints (jsonb), xp_reward, time_limit_seconds, memory_limit_mb, is_published
 
-arena_content.chapters
-  id, slug, title, ordering, story_md, prerequisite_chapter_id,
-  map_position_x, map_position_y, preview_asset, is_published
-
-arena_content.chapter_tasks
-  chapter_id, task_id, ordering
+# Story tables: see story-mode.md (Phase 2 data model in arena_story schema)
 
 arena_identity.users
   id, email (nullable), external_user_id (nullable), avatar_asset, created_at
@@ -192,9 +197,6 @@ arena_execution.runs
 
 arena_progress.user_task_progress
   user_id, task_id, first_passed_at, best_run_id, attempts_count
-
-arena_progress.user_chapter_progress
-  user_id, chapter_id, unlocked_at, completed_at
 ```
 
 - All primary keys: `Guid.CreateVersion7()` (time-ordered v7 UUIDs). Banned: `Guid.NewGuid()`.
@@ -222,8 +224,20 @@ Planned (Phase 1+):
 | GET    | `/api/runs/{runId}/`                  | Poll a run for verdict                              |
 | GET    | `/api/me/`                            | Current user                                        |
 | GET    | `/api/packages/{slug}/scoreboard/`    | Per-package leaderboard                             |
-| GET    | `/api/chapters/`                      | List chapters (Story mode)                          |
-| GET    | `/api/chapters/{id}/`                 | Chapter detail + tasks + gating                     |
+| GET    | `/api/story/campaigns/`               | List campaigns (filterable)                         |
+| GET    | `/api/story/campaigns/{slug}/`        | Campaign detail: acts + chapters + map paths        |
+| GET    | `/api/story/chapters/{id}/`           | Chapter detail: tasks + goals + inserts + rewards   |
+
+Admin (Phase 2, role-gated):
+
+| Method | Path                                          | Purpose                                  |
+| ------ | --------------------------------------------- | ---------------------------------------- |
+| POST   | `/api/admin/story/campaigns/`                 | Create campaign                          |
+| PUT    | `/api/admin/story/campaigns/{id}/`            | Update campaign                          |
+| POST   | `/api/admin/story/chapters/`                  | Create chapter                           |
+| PUT    | `/api/admin/story/chapters/{id}/`             | Update chapter                           |
+| PUT    | `/api/admin/story/chapters/{id}/position/`    | Drag-to-update map position              |
+| POST   | `/api/admin/story/inserts/`                   | Create story insert (cutscene)           |
 
 Trailing slash is required — nginx returns `301` without it, which breaks CORS
 preflight.

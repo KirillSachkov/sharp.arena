@@ -38,15 +38,53 @@ End-to-end "user opens a task, writes code, hits Run, sees verdict" loop.
 
 ## Phase 2 — Story mode
 
-Same engine, chapter-shaped shell.
+Split into four substages. Stage A ships now (this is the foundation).
+Stages B and C land after Phase 1 is demoable.
 
-- [ ] Domain: `Chapter`, `ChapterTask` entities, `UserChapterProgress`.
-- [ ] EF migrations.
-- [ ] Vertical slices: `Chapters/ListChapters`, `Chapters/GetChapter`.
-- [ ] Gating: complete prerequisite chapter → unlock next.
-- [ ] Frontend: `/story` map page (`@xyflow/react` or hand-rolled SVG),
-      chapter detail page, transition animation between chapters.
-- [ ] Seed 1 chapter with 3 tasks to demo gating.
+### Phase 2A — Story design & frontend mock (this commit)
+
+Specification + visual scaffold so we can iterate on UX before writing
+production backend code. No new server endpoints, no DB tables.
+
+- [ ] `docs/story-mode.md` — full Story spec (data model, API contracts,
+      FSD frontend plan, content authoring, admin-UI scope).
+- [ ] `ARCHITECTURE.md` updated: Story module row, `arena_story` schema,
+      `/api/story/*` endpoint table.
+- [ ] Frontend `entities/campaign`, `entities/act`, `entities/story-insert`
+      with hardcoded fixtures. `entities/chapter` expanded.
+- [ ] Frontend widgets: `story-campaign-list`, `story-map`,
+      `story-chapter-panel`, `story-acts-bar`.
+- [ ] `/story` page composes the four widgets in a 3-column + bottom-bar
+      layout matching the reference mockup. Local React state for
+      selected campaign / chapter.
+
+### Phase 2B — Story backend (after Phase 1)
+
+- [ ] `Modules/Story/` skeleton: `Domain/`, `Features/`, `Infrastructure/`,
+      `Public/IStoryReader`. NetArchTest rule pins the boundary.
+- [ ] `StoryDbContext` + initial EF migration creating all `arena_story.*`
+      tables described in `story-mode.md`.
+- [ ] Read endpoints: `GET /api/story/campaigns/`,
+      `GET /api/story/campaigns/{slug}/`, `GET /api/story/chapters/{id}/`.
+- [ ] Progress integration: `Modules/Progress/` adds
+      `user_chapter_progress`, listens for `TaskPassed` integration event
+      to advance chapter status.
+- [ ] Hardcoded seed: 1 campaign (Основы C#) loaded on startup.
+
+### Phase 2C — Admin UI for authoring (after 2B)
+
+- [ ] Admin-only CRUD endpoints under `/api/admin/story/*` (campaigns,
+      chapters, inserts, position drag, task linkage).
+- [ ] Frontend `/admin/story/` route (gated by role) with map editor
+      (drag chapter nodes to update positions) and rich-text editor for
+      story inserts.
+
+### Phase 2D — Cutscene player (after 2C)
+
+- [ ] `widgets/cutscene-overlay` — fullscreen story-insert player with
+      art + body markdown.
+- [ ] Triggers: before chapter starts / after chapter completes / on
+      manual "Смотреть вставку" click in chapter panel.
 
 ## Phase 3 — Multi-language
 
