@@ -1,7 +1,11 @@
+using System.Reflection;
 using ArenaApi.Modules.Content.Core;
 using ArenaApi.Modules.Content.Infrastructure.Postgres;
+using ArenaApi.Modules.Execution.Core;
 using ArenaApi.Modules.Execution.Infrastructure.Postgres;
+using ArenaApi.Modules.IdentityStub.Core;
 using ArenaApi.Modules.IdentityStub.Infrastructure;
+using ArenaApi.Modules.Progress.Core;
 using ArenaApi.Modules.Progress.Infrastructure.Postgres;
 using ArenaApi.SharedKernel;
 using ArenaApi.SharedKernel.Abstractions;
@@ -23,11 +27,20 @@ builder.Services
     .AddExecutionInfrastructure(builder.Configuration)
     .AddProgressInfrastructure(builder.Configuration);
 
-// Content handlers + validators + endpoints — registered from Core assembly.
-// (Execution/Progress/IdentityStub register their handlers in later tasks.)
-builder.Services.AddHandlers(typeof(ContentCoreAssemblyMarker).Assembly);
-builder.Services.AddValidatorsFromAssembly(typeof(ContentCoreAssemblyMarker).Assembly);
-builder.Services.AddEndpoints(typeof(ContentCoreAssemblyMarker).Assembly);
+Assembly[] moduleCoreAssemblies =
+[
+    typeof(ContentCoreAssemblyMarker).Assembly,
+    typeof(ExecutionCoreAssemblyMarker).Assembly,
+    typeof(ProgressCoreAssemblyMarker).Assembly,
+    typeof(IdentityStubCoreAssemblyMarker).Assembly,
+];
+
+builder.Services.AddHandlers(moduleCoreAssemblies);
+foreach (Assembly assembly in moduleCoreAssemblies)
+{
+    builder.Services.AddValidatorsFromAssembly(assembly);
+    builder.Services.AddEndpoints(assembly);
+}
 
 builder.Services.AddStackExchangeRedisCache(options =>
 {
