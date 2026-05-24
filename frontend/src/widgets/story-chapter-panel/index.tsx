@@ -35,6 +35,18 @@ const DIFFICULTY_LABEL: Record<ChapterDetail["difficulty"], string> = {
   boss: "Босс",
 };
 
+const STATUS_LABEL: Record<ChapterDetail["status"], string> = {
+  locked: "Заблокировано",
+  "in-progress": "В процессе",
+  completed: "Завершено",
+};
+
+const STATUS_TONE_CLASS: Record<ChapterDetail["status"], string> = {
+  locked: "text-text-muted",
+  "in-progress": "text-primary-soft",
+  completed: "text-accent-green",
+};
+
 export function StoryChapterPanel({ chapter, insert }: Props) {
   return (
     <div className="flex flex-col gap-4">
@@ -49,8 +61,8 @@ export function StoryChapterPanel({ chapter, insert }: Props) {
               <p className="text-base font-semibold text-text">
                 {chapter.title}
               </p>
-              <p className="mt-0.5 font-mono text-[11px] uppercase tracking-[0.18em] text-primary-soft">
-                В процессе
+              <p className={cn("mt-0.5 font-mono text-[11px] uppercase tracking-[0.18em]", STATUS_TONE_CLASS[chapter.status])}>
+                {STATUS_LABEL[chapter.status]}
               </p>
             </div>
           </div>

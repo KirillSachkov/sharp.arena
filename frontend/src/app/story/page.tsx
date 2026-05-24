@@ -10,16 +10,26 @@ import { StoryMap } from "@/widgets/story-map";
 import { StoryChapterPanel } from "@/widgets/story-chapter-panel";
 import { StoryActsBar } from "@/widgets/story-acts-bar";
 
+type CampaignDetail = (typeof MOCK_CAMPAIGN_DETAILS)[string];
+
+function pickInitialChapterId(campaign: CampaignDetail) {
+  const inProgressWithDetail = campaign.chapters.find(
+    (c) => c.status === "in-progress" && campaign.chapterDetailsById[c.id],
+  );
+  return (
+    inProgressWithDetail?.id ??
+    campaign.chapters.find((c) => c.status === "in-progress")?.id ??
+    campaign.chapters[0]!.id
+  );
+}
+
 export default function StoryPage() {
   const [selectedCampaignSlug, setSelectedCampaignSlug] = useState(
     MOCK_CAMPAIGNS[0]!.slug,
   );
   const campaign = MOCK_CAMPAIGN_DETAILS[selectedCampaignSlug]!;
-  const defaultSelectedChapterId =
-    campaign.chapters.find((c) => c.status === "in-progress")?.id ??
-    campaign.chapters[0]!.id;
-  const [selectedChapterId, setSelectedChapterId] = useState(
-    defaultSelectedChapterId,
+  const [selectedChapterId, setSelectedChapterId] = useState(() =>
+    pickInitialChapterId(campaign),
   );
   const detail =
     campaign.chapterDetailsById[selectedChapterId] ??
@@ -35,12 +45,7 @@ export default function StoryPage() {
           onSelect={(slug) => {
             setSelectedCampaignSlug(slug);
             const next = MOCK_CAMPAIGN_DETAILS[slug];
-            if (next) {
-              const inProgress = next.chapters.find(
-                (c) => c.status === "in-progress",
-              );
-              setSelectedChapterId(inProgress?.id ?? next.chapters[0]!.id);
-            }
+            if (next) setSelectedChapterId(pickInitialChapterId(next));
           }}
         />
         <StoryMap

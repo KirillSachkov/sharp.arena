@@ -26,12 +26,17 @@ export function StoryMap({
         title={`Карта кампании: ${campaign.title.toUpperCase()}`}
         trailing={
           <div className="flex items-center gap-1.5">
-            {[Plus, Minus, Maximize, Crosshair].map((Icon, i) => (
+            {[
+              { Icon: Plus,      label: "Приблизить" },
+              { Icon: Minus,     label: "Отдалить" },
+              { Icon: Maximize,  label: "На весь экран" },
+              { Icon: Crosshair, label: "Центрировать" },
+            ].map(({ Icon, label }) => (
               <button
-                key={i}
+                key={label}
                 type="button"
                 className="grid size-7 place-items-center rounded-md border border-border-subtle text-text-dim hover:border-primary/60 hover:text-primary"
-                aria-label="Контроль карты"
+                aria-label={label}
               >
                 <Icon className="size-3.5" aria-hidden />
               </button>

@@ -25,7 +25,7 @@ const CSHARP_ACTS: ActSummary[] = [
     index: 2,
     title: "Акт II",
     subtitle: "Структуры и логика",
-    status: "completed",
+    status: "in-progress",
     percent: 83,
   },
   {
