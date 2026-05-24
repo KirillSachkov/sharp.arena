@@ -1,4 +1,4 @@
-namespace ArenaApi.Core.Modules.IdentityStub;
+namespace ArenaApi.Modules.IdentityStub.Application;
 
 public sealed class IdentityStubOptions
 {

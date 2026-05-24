@@ -1,9 +1,9 @@
-using ArenaApi.Core.Modules.IdentityStub.Infrastructure;
-using ArenaApi.Core.Modules.IdentityStub.Public;
+using ArenaApi.Modules.IdentityStub.Application;
+using ArenaApi.Modules.IdentityStub.Public;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace ArenaApi.Core.Modules.IdentityStub;
+namespace ArenaApi.Modules.IdentityStub.Infrastructure;
 
 public static class IdentityStubModule
 {

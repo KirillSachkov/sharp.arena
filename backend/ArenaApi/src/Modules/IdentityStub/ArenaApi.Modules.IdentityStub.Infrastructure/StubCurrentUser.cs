@@ -1,7 +1,8 @@
-using ArenaApi.Core.Modules.IdentityStub.Public;
+using ArenaApi.Modules.IdentityStub.Application;
+using ArenaApi.Modules.IdentityStub.Public;
 using Microsoft.Extensions.Options;
 
-namespace ArenaApi.Core.Modules.IdentityStub.Infrastructure;
+namespace ArenaApi.Modules.IdentityStub.Infrastructure;
 
 internal sealed class StubCurrentUser(IOptions<IdentityStubOptions> options) : ICurrentUser
 {

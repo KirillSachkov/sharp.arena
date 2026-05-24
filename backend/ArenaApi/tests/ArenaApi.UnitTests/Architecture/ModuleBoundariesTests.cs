@@ -7,7 +7,7 @@ namespace ArenaApi.UnitTests.Architecture;
 public sealed class ModuleBoundariesTests
 {
     private static Assembly CoreAssembly =>
-        typeof(ArenaApi.Core.Modules.IdentityStub.IdentityStubModule).Assembly;
+        typeof(object).Assembly;
 
     private const string ContentNs = "ArenaApi.Core.Modules.Content";
     private const string ExecutionNs = "ArenaApi.Core.Modules.Execution";
