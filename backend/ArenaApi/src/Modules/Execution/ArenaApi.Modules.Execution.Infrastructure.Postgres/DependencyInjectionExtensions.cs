@@ -1,14 +1,16 @@
-using ArenaApi.Modules.Execution.Application;
+using ArenaApi.Modules.Execution.Core.Database;
+using ArenaApi.Modules.Execution.Infrastructure.Postgres.Database;
 using ArenaApi.SharedKernel;
+using ArenaApi.SharedKernel.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace ArenaApi.Modules.Execution.Infrastructure.Postgres;
 
-public static class ExecutionModule
+public static class DependencyInjectionExtensions
 {
-    public static IServiceCollection AddExecutionModule(
+    public static IServiceCollection AddExecutionInfrastructure(
         this IServiceCollection services,
         IConfiguration configuration)
     {
@@ -19,7 +21,9 @@ public static class ExecutionModule
                     "__EFMigrationsHistory",
                     ExecutionDbContext.SchemaName)));
 
-        services.AddScoped<ExecutionOutboxService>();
+        services.AddScoped<IOutboxService, OutboxService>();
+        services.AddScoped<ITransactionManager, TransactionManager>();
+
         return services;
     }
 }

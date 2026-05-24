@@ -1,4 +1,3 @@
-using ArenaApi.Modules.Progress.Application;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 

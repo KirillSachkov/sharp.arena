@@ -25,11 +25,11 @@
     <ProjectReference Include="..\Modules\Content\ArenaApi.Modules.Content.Domain\ArenaApi.Modules.Content.Domain.csproj" />
     <ProjectReference Include="..\Modules\Content\ArenaApi.Modules.Content.Core\ArenaApi.Modules.Content.Core.csproj" />
     <ProjectReference Include="..\Modules\Content\ArenaApi.Modules.Content.Infrastructure.Postgres\ArenaApi.Modules.Content.Infrastructure.Postgres.csproj" />
-    <ProjectReference Include="..\Modules\Execution\ArenaApi.Modules.Execution.Public\ArenaApi.Modules.Execution.Public.csproj" />
-    <ProjectReference Include="..\Modules\Execution\ArenaApi.Modules.Execution.Application\ArenaApi.Modules.Execution.Application.csproj" />
+    <ProjectReference Include="..\Modules\Execution\ArenaApi.Modules.Execution.Contracts\ArenaApi.Modules.Execution.Contracts.csproj" />
+    <ProjectReference Include="..\Modules\Execution\ArenaApi.Modules.Execution.Core\ArenaApi.Modules.Execution.Core.csproj" />
     <ProjectReference Include="..\Modules\Execution\ArenaApi.Modules.Execution.Infrastructure.Postgres\ArenaApi.Modules.Execution.Infrastructure.Postgres.csproj" />
-    <ProjectReference Include="..\Modules\Progress\ArenaApi.Modules.Progress.Public\ArenaApi.Modules.Progress.Public.csproj" />
-    <ProjectReference Include="..\Modules\Progress\ArenaApi.Modules.Progress.Application\ArenaApi.Modules.Progress.Application.csproj" />
+    <ProjectReference Include="..\Modules\Progress\ArenaApi.Modules.Progress.Contracts\ArenaApi.Modules.Progress.Contracts.csproj" />
+    <ProjectReference Include="..\Modules\Progress\ArenaApi.Modules.Progress.Core\ArenaApi.Modules.Progress.Core.csproj" />
     <ProjectReference Include="..\Modules\Progress\ArenaApi.Modules.Progress.Infrastructure.Postgres\ArenaApi.Modules.Progress.Infrastructure.Postgres.csproj" />
   </ItemGroup>
 </Project>

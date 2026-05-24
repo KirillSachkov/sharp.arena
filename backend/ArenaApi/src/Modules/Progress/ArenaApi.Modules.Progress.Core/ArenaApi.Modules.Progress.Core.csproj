@@ -1,13 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore" />
-    <PackageReference Include="WolverineFx.EntityFrameworkCore" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\ArenaApi.SharedKernel\ArenaApi.SharedKernel.csproj" />
-    <ProjectReference Include="..\ArenaApi.Modules.Progress.Public\ArenaApi.Modules.Progress.Public.csproj" />
+    <ProjectReference Include="..\ArenaApi.Modules.Progress.Contracts\ArenaApi.Modules.Progress.Contracts.csproj" />
     <ProjectReference Include="..\..\Content\ArenaApi.Modules.Content.Contracts\ArenaApi.Modules.Content.Contracts.csproj" />
   </ItemGroup>
 </Project>

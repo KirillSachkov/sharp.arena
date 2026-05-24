@@ -20,8 +20,8 @@ builder.Services.AddSharedKernel();
 builder.Services
     .AddIdentityStubModule(builder.Configuration)
     .AddContentInfrastructure(builder.Configuration)
-    .AddExecutionModule(builder.Configuration)
-    .AddProgressModule(builder.Configuration);
+    .AddExecutionInfrastructure(builder.Configuration)
+    .AddProgressInfrastructure(builder.Configuration);
 
 // Content handlers + validators + endpoints — registered from Core assembly.
 // (Execution/Progress/IdentityStub register their handlers in later tasks.)

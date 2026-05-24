@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 
-namespace ArenaApi.Modules.Execution.Application;
+namespace ArenaApi.Modules.Execution.Infrastructure.Postgres;
 
 public sealed class ExecutionDbContext(DbContextOptions<ExecutionDbContext> options) : DbContext(options)
 {
@@ -9,9 +9,7 @@ public sealed class ExecutionDbContext(DbContextOptions<ExecutionDbContext> opti
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.HasDefaultSchema(SchemaName);
-        modelBuilder.ApplyConfigurationsFromAssembly(
-            typeof(ExecutionDbContext).Assembly,
-            t => t.Namespace?.StartsWith("ArenaApi.Modules.Execution.Application.Configurations", StringComparison.Ordinal) == true);
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(ExecutionDbContext).Assembly);
         base.OnModelCreating(modelBuilder);
     }
 }
