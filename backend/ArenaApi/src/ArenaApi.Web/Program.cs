@@ -1,21 +1,46 @@
-using ArenaApi.Core;
-using ArenaApi.Core.Features.Health;
-using ArenaApi.Core.Modules.Content;
-using ArenaApi.Core.Modules.Execution;
-using ArenaApi.Core.Modules.IdentityStub;
-using ArenaApi.Core.Modules.Progress;
+using System.Reflection;
+using ArenaApi.Modules.Content.Core;
+using ArenaApi.Modules.Content.Infrastructure.Postgres;
+using ArenaApi.Modules.Execution.Core;
+using ArenaApi.Modules.Execution.Infrastructure.Postgres;
+using ArenaApi.Modules.IdentityStub.Core;
+using ArenaApi.Modules.IdentityStub.Infrastructure;
+using ArenaApi.Modules.Progress.Core;
+using ArenaApi.Modules.Progress.Infrastructure.Postgres;
+using ArenaApi.SharedKernel;
+using ArenaApi.SharedKernel.Abstractions;
+using ArenaApi.SharedKernel.Endpoints;
 using ArenaApi.Web.Configuration;
+using ArenaApi.Web.Health;
+using FluentValidation;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddSharedKernel();
 
 // Order matters: modules register their DbContexts first, then UseArenaWolverine
 // wraps them with EF Core transactional middleware (IDbContextOutbox<T> resolves
 // per DbContext at runtime).
 builder.Services
-    .AddIdentityStubModule(builder.Configuration)
-    .AddContentModule(builder.Configuration)
-    .AddExecutionModule(builder.Configuration)
-    .AddProgressModule(builder.Configuration);
+    .AddIdentityStubInfrastructure(builder.Configuration)
+    .AddContentInfrastructure(builder.Configuration)
+    .AddExecutionInfrastructure(builder.Configuration)
+    .AddProgressInfrastructure(builder.Configuration);
+
+Assembly[] moduleCoreAssemblies =
+[
+    typeof(ContentCoreAssemblyMarker).Assembly,
+    typeof(ExecutionCoreAssemblyMarker).Assembly,
+    typeof(ProgressCoreAssemblyMarker).Assembly,
+    typeof(IdentityStubCoreAssemblyMarker).Assembly,
+];
+
+builder.Services.AddHandlers(moduleCoreAssemblies);
+foreach (Assembly assembly in moduleCoreAssemblies)
+{
+    builder.Services.AddValidatorsFromAssembly(assembly);
+    builder.Services.AddEndpoints(assembly);
+}
 
 builder.Services.AddStackExchangeRedisCache(options =>
 {
@@ -36,7 +61,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.MapHealthEndpoints();
-app.MapContentEndpoints();
+app.MapEndpoints();
 
 await app.RunAsync();
 

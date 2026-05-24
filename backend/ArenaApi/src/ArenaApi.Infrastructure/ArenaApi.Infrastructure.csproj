@@ -1,8 +1,0 @@
-<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <RootNamespace>ArenaApi.Infrastructure</RootNamespace>
-  </PropertyGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\ArenaApi.Core\ArenaApi.Core.csproj" />
-  </ItemGroup>
-</Project>

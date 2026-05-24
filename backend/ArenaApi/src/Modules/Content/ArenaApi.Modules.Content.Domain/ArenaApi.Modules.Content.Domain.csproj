@@ -1,0 +1,8 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <PackageReference Include="CSharpFunctionalExtensions" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\ArenaApi.SharedKernel\ArenaApi.SharedKernel.csproj" />
+  </ItemGroup>
+</Project>
