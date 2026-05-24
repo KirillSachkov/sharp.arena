@@ -1,15 +1,14 @@
-using ArenaApi.Core.Modules.Content.Domain;
-using ArenaApi.Core.Modules.Content.Infrastructure;
-using ArenaApi.Core.Modules.Content.Public;
-using ArenaApi.Core.Modules.Content.Public.IntegrationEvents;
+using ArenaApi.Modules.Content.Domain;
+using ArenaApi.Modules.Content.Public;
+using ArenaApi.Modules.Content.Public.IntegrationEvents;
 using ArenaApi.SharedKernel.Errors;
 using ArenaApi.SharedKernel.Time;
 using CSharpFunctionalExtensions;
 using Microsoft.EntityFrameworkCore;
 
-namespace ArenaApi.Core.Modules.Content.Features.CreatePackage;
+namespace ArenaApi.Modules.Content.Application.Features.CreatePackage;
 
-internal sealed class CreatePackageHandler(
+public sealed class CreatePackageHandler(
     ContentDbContext db,
     ContentOutboxService outbox,
     IClock clock)

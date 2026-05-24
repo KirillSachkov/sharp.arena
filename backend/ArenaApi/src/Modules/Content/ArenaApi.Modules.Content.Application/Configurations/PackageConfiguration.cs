@@ -1,8 +1,8 @@
-using ArenaApi.Core.Modules.Content.Domain;
+using ArenaApi.Modules.Content.Domain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace ArenaApi.Core.Modules.Content.Infrastructure.Configurations;
+namespace ArenaApi.Modules.Content.Application.Configurations;
 
 internal sealed class PackageConfiguration : IEntityTypeConfiguration<Package>
 {

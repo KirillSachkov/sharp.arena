@@ -1,13 +1,12 @@
-using ArenaApi.Core.Modules.Content.Features.CreatePackage;
-using ArenaApi.Core.Modules.Content.Infrastructure;
-using ArenaApi.Core.Modules.Content.Public;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Routing;
+using ArenaApi.Modules.Content.Application;
+using ArenaApi.Modules.Content.Application.Features.CreatePackage;
+using ArenaApi.Modules.Content.Public;
+using ArenaApi.SharedKernel;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace ArenaApi.Core.Modules.Content;
+namespace ArenaApi.Modules.Content.Infrastructure.Postgres;
 
 public static class ContentModule
 {
@@ -17,7 +16,7 @@ public static class ContentModule
     {
         services.AddDbContext<ContentDbContext>(options =>
             options.UseNpgsql(
-                configuration.GetConnectionString(ArenaApi.SharedKernel.ConnectionStringNames.Database),
+                configuration.GetConnectionString(ConnectionStringNames.Database),
                 npgsql => npgsql.MigrationsHistoryTable(
                     "__EFMigrationsHistory",
                     ContentDbContext.SchemaName)));
@@ -27,12 +26,5 @@ public static class ContentModule
         services.AddScoped<CreatePackageHandler>();
 
         return services;
-    }
-
-    public static IEndpointRouteBuilder MapContentEndpoints(this IEndpointRouteBuilder app)
-    {
-        RouteGroupBuilder packages = app.MapGroup("/api/packages");
-        packages.MapCreatePackage();
-        return app;
     }
 }

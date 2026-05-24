@@ -1,5 +1,5 @@
 using ArenaApi.SharedKernel;
-using ArenaApi.Core.Modules.Content;
+using ArenaApi.Modules.Content.Application;
 using Wolverine;
 using Wolverine.EntityFrameworkCore;
 using Wolverine.Postgresql;
@@ -57,7 +57,7 @@ public static class WolverineConfiguration
             // Handler discovery: PackageCreatedHandler lives in ArenaApi.Core, not
             // in the entry assembly (ArenaApi.Web). Wolverine 5.x scans the calling
             // assembly by default, so we must include Core explicitly.
-            opts.Discovery.IncludeAssembly(typeof(ContentModule).Assembly);
+            opts.Discovery.IncludeAssembly(typeof(ContentApplicationAssemblyMarker).Assembly);
         });
 
         return builder;

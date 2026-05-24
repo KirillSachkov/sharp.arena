@@ -1,11 +1,11 @@
-using ArenaApi.Core.Modules.Content.Domain.DomainEvents;
+using ArenaApi.Modules.Content.Domain.DomainEvents;
 using ArenaApi.SharedKernel.DomainEvents;
 using ArenaApi.SharedKernel.Errors;
 using CSharpFunctionalExtensions;
 
-namespace ArenaApi.Core.Modules.Content.Domain;
+namespace ArenaApi.Modules.Content.Domain;
 
-internal sealed class Package : IHasDomainEvents
+public sealed class Package : IHasDomainEvents
 {
     private readonly List<IDomainEvent> _domainEvents = [];
 

@@ -1,7 +1,8 @@
-using ArenaApi.Core.Modules.Content.Public;
+using ArenaApi.Modules.Content.Application;
+using ArenaApi.Modules.Content.Public;
 using Microsoft.EntityFrameworkCore;
 
-namespace ArenaApi.Core.Modules.Content.Infrastructure;
+namespace ArenaApi.Modules.Content.Infrastructure.Postgres;
 
 internal sealed class ContentReader(ContentDbContext db) : IContentReader
 {

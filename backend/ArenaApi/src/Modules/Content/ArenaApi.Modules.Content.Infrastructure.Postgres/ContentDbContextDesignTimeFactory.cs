@@ -1,7 +1,8 @@
+using ArenaApi.Modules.Content.Application;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 
-namespace ArenaApi.Core.Modules.Content.Infrastructure;
+namespace ArenaApi.Modules.Content.Infrastructure.Postgres;
 
 internal sealed class ContentDbContextDesignTimeFactory : IDesignTimeDbContextFactory<ContentDbContext>
 {

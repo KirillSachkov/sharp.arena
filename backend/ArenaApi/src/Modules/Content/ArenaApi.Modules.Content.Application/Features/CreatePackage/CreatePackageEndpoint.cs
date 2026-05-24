@@ -1,5 +1,5 @@
 using ArenaApi.Contracts.Content;
-using ArenaApi.Core.Modules.Content.Public;
+using ArenaApi.Modules.Content.Public;
 using ArenaApi.SharedKernel.Errors;
 using CSharpFunctionalExtensions;
 using Microsoft.AspNetCore.Builder;
@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Routing;
 
-namespace ArenaApi.Core.Modules.Content.Features.CreatePackage;
+namespace ArenaApi.Modules.Content.Application.Features.CreatePackage;
 
 internal static class CreatePackageEndpoint
 {

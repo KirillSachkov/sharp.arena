@@ -6,6 +6,12 @@
     <Project Path="ArenaApi/src/ArenaApi.Infrastructure/ArenaApi.Infrastructure.csproj" />
     <Project Path="ArenaApi/src/ArenaApi.Web/ArenaApi.Web.csproj" />
   </Folder>
+  <Folder Name="/ArenaApi/Modules/Content/">
+    <Project Path="ArenaApi/src/Modules/Content/ArenaApi.Modules.Content.Public/ArenaApi.Modules.Content.Public.csproj" />
+    <Project Path="ArenaApi/src/Modules/Content/ArenaApi.Modules.Content.Domain/ArenaApi.Modules.Content.Domain.csproj" />
+    <Project Path="ArenaApi/src/Modules/Content/ArenaApi.Modules.Content.Application/ArenaApi.Modules.Content.Application.csproj" />
+    <Project Path="ArenaApi/src/Modules/Content/ArenaApi.Modules.Content.Infrastructure.Postgres/ArenaApi.Modules.Content.Infrastructure.Postgres.csproj" />
+  </Folder>
   <Folder Name="/ArenaApi/tests/">
     <Project Path="ArenaApi/tests/ArenaApi.UnitTests/ArenaApi.UnitTests.csproj" />
     <Project Path="ArenaApi/tests/ArenaApi.IntegrationTests/ArenaApi.IntegrationTests.csproj" />

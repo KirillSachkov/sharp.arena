@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace ArenaApi.Core.Modules.Content.Infrastructure.Migrations
+namespace ArenaApi.Modules.Content.Infrastructure.Postgres.Migrations
 {
     /// <inheritdoc />
     public partial class ContentInitial : Migration

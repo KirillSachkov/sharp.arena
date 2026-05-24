@@ -20,5 +20,9 @@
     <ProjectReference Include="..\ArenaApi.Core\ArenaApi.Core.csproj" />
     <ProjectReference Include="..\ArenaApi.Infrastructure\ArenaApi.Infrastructure.csproj" />
     <ProjectReference Include="..\ArenaApi.SharedKernel\ArenaApi.SharedKernel.csproj" />
+    <ProjectReference Include="..\Modules\Content\ArenaApi.Modules.Content.Public\ArenaApi.Modules.Content.Public.csproj" />
+    <ProjectReference Include="..\Modules\Content\ArenaApi.Modules.Content.Domain\ArenaApi.Modules.Content.Domain.csproj" />
+    <ProjectReference Include="..\Modules\Content\ArenaApi.Modules.Content.Application\ArenaApi.Modules.Content.Application.csproj" />
+    <ProjectReference Include="..\Modules\Content\ArenaApi.Modules.Content.Infrastructure.Postgres\ArenaApi.Modules.Content.Infrastructure.Postgres.csproj" />
   </ItemGroup>
 </Project>
