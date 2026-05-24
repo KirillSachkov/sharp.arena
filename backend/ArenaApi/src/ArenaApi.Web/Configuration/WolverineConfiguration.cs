@@ -1,5 +1,5 @@
 using ArenaApi.SharedKernel;
-using ArenaApi.Modules.Content.Application;
+using ArenaApi.Modules.Content.Core;
 using ArenaApi.Modules.Progress.Application;
 using Wolverine;
 using Wolverine.EntityFrameworkCore;
@@ -58,7 +58,7 @@ public static class WolverineConfiguration
             // Handler discovery: handlers live in module Application assemblies, not
             // in the entry assembly (ArenaApi.Web). Wolverine 5.x scans the calling
             // assembly by default, so we must include each module assembly explicitly.
-            opts.Discovery.IncludeAssembly(typeof(ContentApplicationAssemblyMarker).Assembly);
+            opts.Discovery.IncludeAssembly(typeof(ContentCoreAssemblyMarker).Assembly);
             opts.Discovery.IncludeAssembly(typeof(ProgressApplicationAssemblyMarker).Assembly);
         });
 

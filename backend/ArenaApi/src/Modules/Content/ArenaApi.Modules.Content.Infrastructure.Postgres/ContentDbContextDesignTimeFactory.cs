@@ -1,4 +1,4 @@
-using ArenaApi.Modules.Content.Application;
+// ContentDbContext now lives in this assembly (Infrastructure.Postgres)
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 

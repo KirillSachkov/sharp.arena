@@ -1,4 +1,4 @@
-using ArenaApi.Modules.Content.Application;
+using ArenaApi.Modules.Content.Infrastructure.Postgres;
 using ArenaApi.Web;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;

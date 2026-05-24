@@ -21,9 +21,9 @@
     <ProjectReference Include="..\Modules\IdentityStub\ArenaApi.Modules.IdentityStub.Public\ArenaApi.Modules.IdentityStub.Public.csproj" />
     <ProjectReference Include="..\Modules\IdentityStub\ArenaApi.Modules.IdentityStub.Application\ArenaApi.Modules.IdentityStub.Application.csproj" />
     <ProjectReference Include="..\Modules\IdentityStub\ArenaApi.Modules.IdentityStub.Infrastructure\ArenaApi.Modules.IdentityStub.Infrastructure.csproj" />
-    <ProjectReference Include="..\Modules\Content\ArenaApi.Modules.Content.Public\ArenaApi.Modules.Content.Public.csproj" />
+    <ProjectReference Include="..\Modules\Content\ArenaApi.Modules.Content.Contracts\ArenaApi.Modules.Content.Contracts.csproj" />
     <ProjectReference Include="..\Modules\Content\ArenaApi.Modules.Content.Domain\ArenaApi.Modules.Content.Domain.csproj" />
-    <ProjectReference Include="..\Modules\Content\ArenaApi.Modules.Content.Application\ArenaApi.Modules.Content.Application.csproj" />
+    <ProjectReference Include="..\Modules\Content\ArenaApi.Modules.Content.Core\ArenaApi.Modules.Content.Core.csproj" />
     <ProjectReference Include="..\Modules\Content\ArenaApi.Modules.Content.Infrastructure.Postgres\ArenaApi.Modules.Content.Infrastructure.Postgres.csproj" />
     <ProjectReference Include="..\Modules\Execution\ArenaApi.Modules.Execution.Public\ArenaApi.Modules.Execution.Public.csproj" />
     <ProjectReference Include="..\Modules\Execution\ArenaApi.Modules.Execution.Application\ArenaApi.Modules.Execution.Application.csproj" />

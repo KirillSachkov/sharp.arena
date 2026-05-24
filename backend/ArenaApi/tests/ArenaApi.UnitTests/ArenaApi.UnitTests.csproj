@@ -15,6 +15,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Modules\Content\ArenaApi.Modules.Content.Application\ArenaApi.Modules.Content.Application.csproj" />
+    <ProjectReference Include="..\..\src\Modules\Content\ArenaApi.Modules.Content.Core\ArenaApi.Modules.Content.Core.csproj" />
   </ItemGroup>
 </Project>

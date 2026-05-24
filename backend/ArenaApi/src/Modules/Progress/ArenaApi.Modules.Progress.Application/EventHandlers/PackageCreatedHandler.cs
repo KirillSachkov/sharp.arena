@@ -1,4 +1,4 @@
-using ArenaApi.Modules.Content.Public.IntegrationEvents;
+using ArenaApi.Modules.Content.Contracts.IntegrationEvents;
 using Microsoft.Extensions.Logging;
 
 namespace ArenaApi.Modules.Progress.Application.EventHandlers;

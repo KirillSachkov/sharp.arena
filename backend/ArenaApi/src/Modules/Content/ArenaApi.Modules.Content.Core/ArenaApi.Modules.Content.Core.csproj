@@ -5,15 +5,11 @@
     <PackageReference Include="CSharpFunctionalExtensions" />
     <PackageReference Include="FluentValidation" />
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" />
-
-    <PackageReference Include="Microsoft.EntityFrameworkCore" />
-    <PackageReference Include="WolverineFx.EntityFrameworkCore" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\ArenaApi.SharedKernel\ArenaApi.SharedKernel.csproj" />
-    <ProjectReference Include="..\..\..\ArenaApi.Contracts\ArenaApi.Contracts.csproj" />
     <ProjectReference Include="..\ArenaApi.Modules.Content.Domain\ArenaApi.Modules.Content.Domain.csproj" />
-    <ProjectReference Include="..\ArenaApi.Modules.Content.Public\ArenaApi.Modules.Content.Public.csproj" />
+    <ProjectReference Include="..\ArenaApi.Modules.Content.Contracts\ArenaApi.Modules.Content.Contracts.csproj" />
   </ItemGroup>
 </Project>

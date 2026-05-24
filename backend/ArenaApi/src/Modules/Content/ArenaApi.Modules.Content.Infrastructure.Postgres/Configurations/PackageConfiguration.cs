@@ -2,7 +2,7 @@ using ArenaApi.Modules.Content.Domain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace ArenaApi.Modules.Content.Application.Configurations;
+namespace ArenaApi.Modules.Content.Infrastructure.Postgres.Configurations;
 
 internal sealed class PackageConfiguration : IEntityTypeConfiguration<Package>
 {

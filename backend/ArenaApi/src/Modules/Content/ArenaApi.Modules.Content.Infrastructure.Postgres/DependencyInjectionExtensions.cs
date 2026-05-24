@@ -1,16 +1,17 @@
-using ArenaApi.Modules.Content.Application;
-using ArenaApi.Modules.Content.Application.Features.CreatePackage;
-using ArenaApi.Modules.Content.Public;
+using ArenaApi.Modules.Content.Contracts;
+using ArenaApi.Modules.Content.Core.Database;
+using ArenaApi.Modules.Content.Infrastructure.Postgres.Database;
 using ArenaApi.SharedKernel;
+using ArenaApi.SharedKernel.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace ArenaApi.Modules.Content.Infrastructure.Postgres;
 
-public static class ContentModule
+public static class DependencyInjectionExtensions
 {
-    public static IServiceCollection AddContentModule(
+    public static IServiceCollection AddContentInfrastructure(
         this IServiceCollection services,
         IConfiguration configuration)
     {
@@ -21,9 +22,10 @@ public static class ContentModule
                     "__EFMigrationsHistory",
                     ContentDbContext.SchemaName)));
 
+        services.AddScoped<IPackagesRepository, PackagesRepository>();
         services.AddScoped<IContentReader, ContentReader>();
-        services.AddScoped<ContentOutboxService>();
-        services.AddScoped<CreatePackageHandler>();
+        services.AddScoped<IOutboxService, OutboxService>();
+        services.AddScoped<ITransactionManager, TransactionManager>();
 
         return services;
     }

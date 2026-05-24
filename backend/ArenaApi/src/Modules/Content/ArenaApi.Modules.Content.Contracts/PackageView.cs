@@ -1,4 +1,4 @@
-namespace ArenaApi.Modules.Content.Public;
+namespace ArenaApi.Modules.Content.Contracts;
 
 /// Immutable cross-module projection of a Package. Anything other modules
 /// need to know about a package goes here; the internal Domain.Package may

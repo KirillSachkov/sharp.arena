@@ -1,11 +1,14 @@
-using ArenaApi.Modules.Content.Application;
+using ArenaApi.Modules.Content.Core;
 using ArenaApi.Modules.Content.Infrastructure.Postgres;
 using ArenaApi.Modules.Execution.Infrastructure.Postgres;
 using ArenaApi.Modules.IdentityStub.Infrastructure;
 using ArenaApi.Modules.Progress.Infrastructure.Postgres;
 using ArenaApi.SharedKernel;
+using ArenaApi.SharedKernel.Abstractions;
+using ArenaApi.SharedKernel.Endpoints;
 using ArenaApi.Web.Configuration;
 using ArenaApi.Web.Health;
+using FluentValidation;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
@@ -16,9 +19,15 @@ builder.Services.AddSharedKernel();
 // per DbContext at runtime).
 builder.Services
     .AddIdentityStubModule(builder.Configuration)
-    .AddContentModule(builder.Configuration)
+    .AddContentInfrastructure(builder.Configuration)
     .AddExecutionModule(builder.Configuration)
     .AddProgressModule(builder.Configuration);
+
+// Content handlers + validators + endpoints — registered from Core assembly.
+// (Execution/Progress/IdentityStub register their handlers in later tasks.)
+builder.Services.AddHandlers(typeof(ContentCoreAssemblyMarker).Assembly);
+builder.Services.AddValidatorsFromAssembly(typeof(ContentCoreAssemblyMarker).Assembly);
+builder.Services.AddEndpoints(typeof(ContentCoreAssemblyMarker).Assembly);
 
 builder.Services.AddStackExchangeRedisCache(options =>
 {
@@ -39,7 +48,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.MapHealthEndpoints();
-app.MapContentEndpoints();
+app.MapEndpoints();
 
 await app.RunAsync();
 

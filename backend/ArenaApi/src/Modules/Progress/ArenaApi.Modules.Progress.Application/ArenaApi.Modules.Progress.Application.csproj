@@ -8,6 +8,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\ArenaApi.SharedKernel\ArenaApi.SharedKernel.csproj" />
     <ProjectReference Include="..\ArenaApi.Modules.Progress.Public\ArenaApi.Modules.Progress.Public.csproj" />
-    <ProjectReference Include="..\..\Content\ArenaApi.Modules.Content.Public\ArenaApi.Modules.Content.Public.csproj" />
+    <ProjectReference Include="..\..\Content\ArenaApi.Modules.Content.Contracts\ArenaApi.Modules.Content.Contracts.csproj" />
   </ItemGroup>
 </Project>

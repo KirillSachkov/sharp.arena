@@ -1,7 +1,7 @@
 using System.Globalization;
 using System.Net;
 using System.Net.Http.Json;
-using ArenaApi.Contracts.Content;
+using ArenaApi.Modules.Content.Contracts;
 using ArenaApi.IntegrationTests.Infrastructure;
 using Npgsql;
 using Xunit;

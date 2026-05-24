@@ -1,5 +1,4 @@
-using ArenaApi.Modules.Content.Application;
-using ArenaApi.Modules.Content.Public;
+using ArenaApi.Modules.Content.Contracts;
 using Microsoft.EntityFrameworkCore;
 
 namespace ArenaApi.Modules.Content.Infrastructure.Postgres;

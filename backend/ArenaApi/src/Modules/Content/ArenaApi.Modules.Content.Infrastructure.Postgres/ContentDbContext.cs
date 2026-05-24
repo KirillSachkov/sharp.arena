@@ -1,7 +1,7 @@
 using ArenaApi.Modules.Content.Domain;
 using Microsoft.EntityFrameworkCore;
 
-namespace ArenaApi.Modules.Content.Application;
+namespace ArenaApi.Modules.Content.Infrastructure.Postgres;
 
 public sealed class ContentDbContext(DbContextOptions<ContentDbContext> options) : DbContext(options)
 {
@@ -12,9 +12,7 @@ public sealed class ContentDbContext(DbContextOptions<ContentDbContext> options)
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.HasDefaultSchema(SchemaName);
-        modelBuilder.ApplyConfigurationsFromAssembly(
-            typeof(ContentDbContext).Assembly,
-            t => t.Namespace?.StartsWith("ArenaApi.Modules.Content.Application.Configurations", StringComparison.Ordinal) == true);
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(ContentDbContext).Assembly);
         base.OnModelCreating(modelBuilder);
     }
 }

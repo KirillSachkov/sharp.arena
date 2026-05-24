@@ -1,4 +1,4 @@
-namespace ArenaApi.Modules.Content.Public;
+namespace ArenaApi.Modules.Content.Contracts;
 
 /// Sync read contract for other modules. Implementation lives in
 /// Content/Infrastructure/ContentReader.cs and queries ContentDbContext.

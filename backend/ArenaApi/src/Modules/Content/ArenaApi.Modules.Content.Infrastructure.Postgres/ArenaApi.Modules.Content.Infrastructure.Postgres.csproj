@@ -2,7 +2,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" />
-    <PackageReference Include="Npgsql" />
+    <PackageReference Include="WolverineFx.EntityFrameworkCore" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -12,6 +12,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\ArenaApi.SharedKernel\ArenaApi.SharedKernel.csproj" />
     <ProjectReference Include="..\ArenaApi.Modules.Content.Domain\ArenaApi.Modules.Content.Domain.csproj" />
-    <ProjectReference Include="..\ArenaApi.Modules.Content.Application\ArenaApi.Modules.Content.Application.csproj" />
+    <ProjectReference Include="..\ArenaApi.Modules.Content.Core\ArenaApi.Modules.Content.Core.csproj" />
   </ItemGroup>
 </Project>
