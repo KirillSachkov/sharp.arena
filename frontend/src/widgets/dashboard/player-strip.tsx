@@ -28,7 +28,7 @@ const iconFrame = {
 
 function Stat({ icon, label, value, hint, tone, className }: StatProps) {
   return (
-    <div className={`flex min-w-0 items-center gap-3 ${className ?? ""}`}>
+    <div className={`flex min-w-0 items-start gap-3 ${className ?? ""}`}>
       <div
         className={`grid size-10 shrink-0 place-items-center rounded-md border ${iconFrame[tone]}`}
       >
@@ -44,7 +44,7 @@ function Stat({ icon, label, value, hint, tone, className }: StatProps) {
           {value}
         </p>
         {hint != null ? (
-          <p className="truncate text-[10px] text-text-muted">{hint}</p>
+          <p className="mt-0.5 truncate text-[10px] text-text-muted">{hint}</p>
         ) : null}
       </div>
     </div>
@@ -58,7 +58,7 @@ export function PlayerStrip() {
       <div className="flex flex-col gap-5 px-5 py-5 sm:px-7 sm:py-6 lg:flex-row lg:items-center lg:gap-10">
         {/* Welcome block — fixed minimum, doesn't shrink under text. */}
         <div className="flex shrink-0 items-center gap-4 lg:max-w-[320px]">
-          <PlayerAvatar size={64} className="shrink-0" />
+          <PlayerAvatar src={p.avatarAsset} size={64} className="shrink-0" />
           <div className="min-w-0">
             <p className="font-pixel text-[10px] uppercase tracking-[0.18em] text-text-muted">
               С возвращением,
@@ -75,7 +75,7 @@ export function PlayerStrip() {
         {/* Stat strip — wraps below the welcome on mobile, sits inline on lg. */}
         <div className="grid flex-1 grid-cols-2 gap-x-5 gap-y-4 sm:grid-cols-3 xl:grid-cols-5">
           {/* Level (special — has its own XP progress bar) */}
-          <div className="flex min-w-0 items-center gap-3">
+          <div className="stat-in flex min-w-0 items-start gap-3">
             <div
               className={`grid size-10 shrink-0 place-items-center rounded-md border ${iconFrame.purple}`}
             >
@@ -88,7 +88,7 @@ export function PlayerStrip() {
               <p className="font-pixel text-xl tabular-nums text-text">
                 {p.level}
               </p>
-              <div className="mt-1 w-32 max-w-full">
+              <div className="mt-1.5 w-32 max-w-full">
                 <ProgressBar
                   value={p.currentXp}
                   max={p.nextLevelXp}
@@ -107,6 +107,7 @@ export function PlayerStrip() {
             label="Серия"
             value={`${p.currentStreak} дн.`}
             hint={`Лучшая: ${p.maxStreak} дн.`}
+            className="stat-in"
           />
           <Stat
             tone="green"
@@ -114,6 +115,7 @@ export function PlayerStrip() {
             label="Решено"
             value={p.solved.toLocaleString()}
             hint="задач"
+            className="stat-in"
           />
           <Stat
             tone="gold"
@@ -121,10 +123,11 @@ export function PlayerStrip() {
             label="Ранг"
             value={`#${p.rank}`}
             hint={`из ${p.totalRanked.toLocaleString()}`}
+            className="stat-in"
           />
 
           {/* Division */}
-          <div className="col-span-2 flex min-w-0 items-center justify-between gap-3 sm:col-span-3 xl:col-span-1 xl:justify-start">
+          <div className="stat-in col-span-2 flex min-w-0 items-start justify-between gap-3 sm:col-span-3 xl:col-span-1 xl:justify-start">
             <div className="min-w-0 leading-tight">
               <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-text-muted">
                 Дивизион

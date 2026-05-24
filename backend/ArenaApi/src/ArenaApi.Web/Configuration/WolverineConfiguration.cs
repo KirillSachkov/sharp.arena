@@ -1,5 +1,6 @@
-using ArenaApi.Core;
-using ArenaApi.Core.Modules.Content;
+using ArenaApi.SharedKernel;
+using ArenaApi.Modules.Content.Core;
+using ArenaApi.Modules.Progress.Core;
 using Wolverine;
 using Wolverine.EntityFrameworkCore;
 using Wolverine.Postgresql;
@@ -13,8 +14,8 @@ public static class WolverineConfiguration
 
     /// <summary>
     /// Wires Wolverine with Postgres durable storage, RabbitMQ transport,
-    /// the EF Core transactional middleware, and handler discovery for the
-    /// Core assembly.
+    /// the EF Core transactional middleware, and handler discovery for every
+    /// module Application assembly that ships Wolverine handlers.
     /// </summary>
     /// <remarks>
     /// Extends <see cref="IHostApplicationBuilder"/> (which <c>WebApplicationBuilder</c>
@@ -54,10 +55,11 @@ public static class WolverineConfiguration
             // runtime for ContentDbContext / ExecutionDbContext / ProgressDbContext.
             opts.UseEntityFrameworkCoreTransactions();
 
-            // Handler discovery: PackageCreatedHandler lives in ArenaApi.Core, not
+            // Handler discovery: handlers live in module Application assemblies, not
             // in the entry assembly (ArenaApi.Web). Wolverine 5.x scans the calling
-            // assembly by default, so we must include Core explicitly.
-            opts.Discovery.IncludeAssembly(typeof(ContentModule).Assembly);
+            // assembly by default, so we must include each module assembly explicitly.
+            opts.Discovery.IncludeAssembly(typeof(ContentCoreAssemblyMarker).Assembly);
+            opts.Discovery.IncludeAssembly(typeof(ProgressCoreAssemblyMarker).Assembly);
         });
 
         return builder;

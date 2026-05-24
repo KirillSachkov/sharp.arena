@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\ArenaApi.SharedKernel\ArenaApi.SharedKernel.csproj" />
+    <ProjectReference Include="..\ArenaApi.Modules.IdentityStub.Contracts\ArenaApi.Modules.IdentityStub.Contracts.csproj" />
+    <ProjectReference Include="..\ArenaApi.Modules.IdentityStub.Core\ArenaApi.Modules.IdentityStub.Core.csproj" />
+  </ItemGroup>
+</Project>

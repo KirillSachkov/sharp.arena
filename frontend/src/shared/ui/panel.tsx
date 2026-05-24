@@ -16,9 +16,9 @@ export function Panel({
   return (
     <div
       className={cn(
-        "rounded-xl border border-border-subtle",
+        "rounded-md border border-border-subtle shadow-[inset_0_1px_0_0_rgba(255,255,255,0.04)]",
         inset ? "bg-bg-elevated" : "bg-bg-panel",
-        glow && "shadow-[0_0_60px_-30px_var(--color-primary)]",
+        glow && "shadow-[0_0_60px_-30px_var(--color-primary),inset_0_1px_0_0_rgba(255,255,255,0.04)]",
         className,
       )}
       {...rest}

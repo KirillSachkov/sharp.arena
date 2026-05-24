@@ -5,8 +5,15 @@ Two anchor decisions drive the whole codebase.
 ## 1. One engine, two shells
 
 A single `tasks` table backs both modes. Arena = task packages. Story =
-chapters + chapter_tasks + narrative gating. Difference is navigation/UI,
-not the data model.
+**campaigns → acts → chapters → tasks** with narrative gating and
+interactive map navigation. Difference is navigation/UI and the
+campaign/act/chapter wrapper around tasks — the underlying task content
+and execution path are shared.
+
+The Story wrapper lives in its own module (`Modules/Story/`) with its
+own Postgres schema (`arena_story`). It reads tasks from Content via
+`IContentReader`. See [story-mode.md](./story-mode.md) for the full Story
+data model and API.
 
 ## 2. Multi-language by design
 
@@ -51,17 +58,16 @@ Timeout | OutOfMemory | RunnerError`.
 
 ## Modular monolith
 
-Single backend process. Inside `ArenaApi.Core`, code is organised by
-**module**, not by technical layer. Each module owns:
+Single backend process. Each module is a set of csproj projects
+(`ArenaApi.Modules.<Name>.{Contracts, Domain, Core, Infrastructure.Postgres}`),
+wired into one DI container by `ArenaApi.Web`. Module isolation is
+compiler-enforced via the csproj ProjectReference graph — no NetArchTest.
+
+Each module owns:
 
 - its own Postgres schema (`arena_<module>`),
-- its own EF Core `DbContext` (never shared),
-- its own folder under `ArenaApi.Core/Modules/<Name>/` with the layout
-  `Public/ Domain/ Features/ Infrastructure/`.
-
-A module's `Public/` folder is the only surface other modules see — every
-other folder is implementation detail, enforced by `NetArchTest` rules in
-`tests/ArenaApi.UnitTests/Architecture/ModuleBoundariesTests.cs`.
+- its own EF Core `DbContext` (in its `Infrastructure.Postgres` project — never in Core),
+- its own `Contracts` project as the only surface other modules may reference.
 
 | Module        | Schema             | Owns                                                  |
 | ------------- | ------------------ | ----------------------------------------------------- |
@@ -69,45 +75,79 @@ other folder is implementation detail, enforced by `NetArchTest` rules in
 | Execution     | `arena_execution`  | Runners, run requests, results, Docker sandbox        |
 | Progress      | `arena_progress`   | User attempts, completion, XP, scoreboard             |
 | IdentityStub  | `arena_identity`   | `ICurrentUser` — hardcoded `Guid` (stub until SSO)    |
+| Story         | `arena_story`      | Campaigns, acts, chapters, story inserts, map layouts |
 
 Phase 0 implements **Content** fully and ships **Execution** and **Progress**
-as skeletons (DbContext + outbox service only). **IdentityStub** is fully
-wired but currently unused by callers.
+as skeletons (DbContext + OutboxService + TransactionManager only).
+**IdentityStub** is fully wired but currently unused by callers. **Story** is
+specified in [story-mode.md](./story-mode.md) but no code lands until Phase 2.
 
 ### Project layout
 
-| Project                                       | Owns                                                        |
-| --------------------------------------------- | ----------------------------------------------------------- |
-| `ArenaApi.Web`                                | Minimal API host, `Program.cs`, Wolverine configuration     |
-| `ArenaApi.Core`                               | `Shared/` primitives and `Modules/<Name>/` (modular body)   |
-| `ArenaApi.Contracts`                          | HTTP DTOs (no Domain dependency)                            |
-| `ArenaApi.Infrastructure`                     | Reserved shell for cross-cutting infra (OTel, jobs, …)      |
+| Project                                                                               | Owns                                                                              |
+| ------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
+| `ArenaApi.Web`                                                                        | Minimal API host, `Program.cs`, Wolverine wiring, auto-discovery via `AddHandlers/AddValidatorsFromAssembly/AddEndpoints` |
+| `ArenaApi.SharedKernel`                                                               | Cross-cutting primitives + abstractions: `ICommand`, `ICommandHandler`, `IQuery`, `IQueryHandler`, `ITransactionManager`, `IEndpoint`, `Error`, `IClock`, `IDomainEvent`, `ConnectionStringNames` |
+| `Modules/<Name>/ArenaApi.Modules.<Name>.Contracts`                                    | Cross-module surface: HTTP DTOs, `I<X>Reader`, view DTOs, integration events      |
+| `Modules/<Name>/ArenaApi.Modules.<Name>.Domain`                                       | Aggregates, value objects, domain events (Content only; skeletons skip this)      |
+| `Modules/<Name>/ArenaApi.Modules.<Name>.Core`                                         | `Database/` (repository + outbox interfaces), `Features/<Area>/UseCases/<Action>.cs` (vertical slice) |
+| `Modules/<Name>/ArenaApi.Modules.<Name>.Infrastructure.Postgres`                      | `<Name>DbContext`, EF `Configurations/`, repository impls, `Database/TransactionManager`, `OutboxService` impl, `DependencyInjectionExtensions.Add<Name>Infrastructure`, `Migrations/` |
 
-`ArenaApi.Domain` and `ArenaApi.Infrastructure.Postgres` no longer exist —
-domain types live per-module under `Modules/<M>/Domain/` and each module
-registers its own `DbContext` from `Modules/<M>/Infrastructure/`.
-
-Vertical slice convention inside a module:
+### Reference graph (one-way)
 
 ```
-ArenaApi.Core/Modules/<Module>/Features/<Action><Name>/
-├── <Action><Name>Command.cs       # or Query
-├── <Action><Name>Handler.cs       # returns Result<T, Error>
-└── <Action><Name>Endpoint.cs      # minimal API mapping
+SharedKernel        ← (no internal refs)
+
+Contracts           → SharedKernel
+Domain              → SharedKernel
+Core                → Domain, Contracts, SharedKernel
+Infrastructure.Postgres → Core, Domain, SharedKernel   [Domain only for Content]
+Web                 → SharedKernel, every module's Core + Infrastructure.Postgres + Contracts (transitively)
 ```
 
-Reads cross-module via `I<Module>Reader` (in `Public/`) — no repository
-abstraction layer.
+Cross-module: `Progress.Core` → `Content.Contracts` is the only inter-module
+reference (`PackageCreatedHandler` consumes the `PackageCreated` integration
+event).
+
+### Vertical slice convention
+
+`<Module>.Core/Features/<Area>/UseCases/<Action>.cs` contains four public
+sealed classes in one file (requires `#pragma warning disable MA0048` at the
+top — Meziantou enforces one-type-per-file):
+
+```
+Modules/<Module>/ArenaApi.Modules.<Module>.Core/Features/<Area>/UseCases/<Action>.cs
+  <Action>Endpoint   : IEndpoint              — MinimalAPI route mapping
+  <Action>Command    : ICommand               — input record (or Query : IQuery)
+  <Action>Validator  : AbstractValidator<...> — FluentValidation rules
+  <Action>Handler    : ICommandHandler<TResp, <Action>Command>
+                       — depends on I<X>Repository + ITransactionManager + IValidator + IOutboxService + IClock
+                       — NEVER on DbContext directly
+```
 
 `Result<T, Error>` (from `CSharpFunctionalExtensions`) is the railway-oriented
 return type for handlers. No throwing for business outcomes.
+
+Endpoints implement `IEndpoint` (defined in `SharedKernel/Endpoints/`) and are
+auto-discovered by reflection — no manual wiring in `Program.cs`.
+
+### Repository pattern
+
+Each module defines `I<X>Repository` in `<Module>.Core/Database/` and the
+implementation in `<Module>.Infrastructure.Postgres/<X>Repository.cs`. Handlers
+depend on the interface; the DbContext is never injected into handlers.
+
+`ITransactionManager` (interface in `SharedKernel/Database/`, per-module impl
+in each `Infrastructure.Postgres/Database/TransactionManager.cs`) wraps
+`BeginTransactionAsync` / `CommitAsync` / `RollbackAsync` so handlers can
+control transaction scope without touching EF Core.
 
 ### Communication between modules
 
 Three legal paths, in order of preference:
 
 1. **Sync read via public contract.** A module exposes `I<Module>Reader`
-   in its `Public/` folder; other modules inject the interface. Read-only.
+   in its `Contracts` project; other modules inject the interface. Read-only.
    No mutations, no business logic — just projection.
 2. **Domain events (intra-module).** Aggregates raise `IDomainEvent` inside
    themselves; handlers in the same module react in the same DB transaction.
@@ -135,16 +175,17 @@ reader.
 - Transactional middleware: `opts.UseEntityFrameworkCoreTransactions()`
   wraps every module's `DbContext` so `SaveChangesAsync` and outbound
   envelopes commit atomically.
-- Per-module wrapper: `<Module>OutboxService` in
-  `Modules/<Module>/Infrastructure/`, implementing the shared
-  `IOutboxService` shape. Handlers inject the concrete wrapper (not the
-  interface) to avoid DI collisions between modules.
+- Per-module outbox: `IOutboxService` interface in
+  `Modules/<Module>/ArenaApi.Modules.<Module>.Core/Database/IOutboxService.cs`;
+  `OutboxService` impl in
+  `Modules/<Module>/ArenaApi.Modules.<Module>.Infrastructure.Postgres/OutboxService.cs`.
+  Handlers inject via the module-scoped interface to avoid DI collisions.
 
 ### Identity is a stub
 
-`Modules/IdentityStub/Public/ICurrentUser.cs` exposes one property:
-`Guid UserId`. The implementation reads a hardcoded ID from
-`appsettings:IdentityStub:HardcodedUserId`. When real SSO arrives (via the
+`Modules/IdentityStub/ArenaApi.Modules.IdentityStub.Contracts/ICurrentUser.cs`
+exposes one property: `Guid UserId`. The implementation reads a hardcoded ID
+from `appsettings:IdentityStub:HardcodedUserId`. When real SSO arrives (via the
 education-platform integration), the implementation behind `ICurrentUser`
 swaps; nothing else changes. Do not add fields here unless every consumer
 truly needs them across SSO migration — extra surface = extra rewrite.
@@ -157,6 +198,7 @@ boundaries. Cross-module reads flow through `I<Module>Reader`.
 | Schema              | Owner module  | Currently provisioned tables                          |
 | ------------------- | ------------- | ----------------------------------------------------- |
 | `arena_content`     | Content       | `packages` (Phase 0)                                  |
+| `arena_story`       | Story         | _none yet — designed only, lands in Phase 2_          |
 | `arena_execution`   | Execution     | _none yet — skeleton DbContext_                       |
 | `arena_progress`    | Progress      | _none yet — skeleton DbContext_                       |
 | `arena_identity`    | IdentityStub  | _none — stub user is config-only_                     |
@@ -176,12 +218,7 @@ arena_content.tasks
   problem_md, starter_code, harness_code, tests_code, solution_code,
   hints (jsonb), xp_reward, time_limit_seconds, memory_limit_mb, is_published
 
-arena_content.chapters
-  id, slug, title, ordering, story_md, prerequisite_chapter_id,
-  map_position_x, map_position_y, preview_asset, is_published
-
-arena_content.chapter_tasks
-  chapter_id, task_id, ordering
+# Story tables: see story-mode.md (Phase 2 data model in arena_story schema)
 
 arena_identity.users
   id, email (nullable), external_user_id (nullable), avatar_asset, created_at
@@ -192,9 +229,6 @@ arena_execution.runs
 
 arena_progress.user_task_progress
   user_id, task_id, first_passed_at, best_run_id, attempts_count
-
-arena_progress.user_chapter_progress
-  user_id, chapter_id, unlocked_at, completed_at
 ```
 
 - All primary keys: `Guid.CreateVersion7()` (time-ordered v7 UUIDs). Banned: `Guid.NewGuid()`.
@@ -222,8 +256,20 @@ Planned (Phase 1+):
 | GET    | `/api/runs/{runId}/`                  | Poll a run for verdict                              |
 | GET    | `/api/me/`                            | Current user                                        |
 | GET    | `/api/packages/{slug}/scoreboard/`    | Per-package leaderboard                             |
-| GET    | `/api/chapters/`                      | List chapters (Story mode)                          |
-| GET    | `/api/chapters/{id}/`                 | Chapter detail + tasks + gating                     |
+| GET    | `/api/story/campaigns/`               | List campaigns (filterable)                         |
+| GET    | `/api/story/campaigns/{slug}/`        | Campaign detail: acts + chapters + map paths        |
+| GET    | `/api/story/chapters/{id}/`           | Chapter detail: tasks + goals + inserts + rewards   |
+
+Admin (Phase 2, role-gated):
+
+| Method | Path                                          | Purpose                                  |
+| ------ | --------------------------------------------- | ---------------------------------------- |
+| POST   | `/api/admin/story/campaigns/`                 | Create campaign                          |
+| PUT    | `/api/admin/story/campaigns/{id}/`            | Update campaign                          |
+| POST   | `/api/admin/story/chapters/`                  | Create chapter                           |
+| PUT    | `/api/admin/story/chapters/{id}/`             | Update chapter                           |
+| PUT    | `/api/admin/story/chapters/{id}/position/`    | Drag-to-update map position              |
+| POST   | `/api/admin/story/inserts/`                   | Create story insert (cutscene)           |
 
 Trailing slash is required — nginx returns `301` without it, which breaks CORS
 preflight.

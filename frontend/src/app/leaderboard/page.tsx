@@ -7,7 +7,7 @@ import {
   PanelBody,
   SegmentedTabs,
 } from "@/shared/ui";
-import { PlayerAvatar } from "@/entities/player";
+import { MOCK_PLAYER, PlayerAvatar } from "@/entities/player";
 import { cn } from "@/shared/lib/cn";
 
 export const metadata: Metadata = {
@@ -90,7 +90,7 @@ export default function LeaderboardPage() {
               >
                 {rankBadge(r.rank)}
                 <div className="flex min-w-0 items-center gap-3">
-                  <PlayerAvatar size={32} />
+                  <PlayerAvatar src={isMe ? MOCK_PLAYER.avatarAsset : undefined} size={32} />
                   <span
                     className={cn(
                       "truncate text-sm font-semibold",

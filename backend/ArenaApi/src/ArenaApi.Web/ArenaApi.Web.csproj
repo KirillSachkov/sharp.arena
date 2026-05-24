@@ -17,7 +17,19 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ArenaApi.Core\ArenaApi.Core.csproj" />
-    <ProjectReference Include="..\ArenaApi.Infrastructure\ArenaApi.Infrastructure.csproj" />
+    <ProjectReference Include="..\ArenaApi.SharedKernel\ArenaApi.SharedKernel.csproj" />
+    <ProjectReference Include="..\Modules\IdentityStub\ArenaApi.Modules.IdentityStub.Contracts\ArenaApi.Modules.IdentityStub.Contracts.csproj" />
+    <ProjectReference Include="..\Modules\IdentityStub\ArenaApi.Modules.IdentityStub.Core\ArenaApi.Modules.IdentityStub.Core.csproj" />
+    <ProjectReference Include="..\Modules\IdentityStub\ArenaApi.Modules.IdentityStub.Infrastructure\ArenaApi.Modules.IdentityStub.Infrastructure.csproj" />
+    <ProjectReference Include="..\Modules\Content\ArenaApi.Modules.Content.Contracts\ArenaApi.Modules.Content.Contracts.csproj" />
+    <ProjectReference Include="..\Modules\Content\ArenaApi.Modules.Content.Domain\ArenaApi.Modules.Content.Domain.csproj" />
+    <ProjectReference Include="..\Modules\Content\ArenaApi.Modules.Content.Core\ArenaApi.Modules.Content.Core.csproj" />
+    <ProjectReference Include="..\Modules\Content\ArenaApi.Modules.Content.Infrastructure.Postgres\ArenaApi.Modules.Content.Infrastructure.Postgres.csproj" />
+    <ProjectReference Include="..\Modules\Execution\ArenaApi.Modules.Execution.Contracts\ArenaApi.Modules.Execution.Contracts.csproj" />
+    <ProjectReference Include="..\Modules\Execution\ArenaApi.Modules.Execution.Core\ArenaApi.Modules.Execution.Core.csproj" />
+    <ProjectReference Include="..\Modules\Execution\ArenaApi.Modules.Execution.Infrastructure.Postgres\ArenaApi.Modules.Execution.Infrastructure.Postgres.csproj" />
+    <ProjectReference Include="..\Modules\Progress\ArenaApi.Modules.Progress.Contracts\ArenaApi.Modules.Progress.Contracts.csproj" />
+    <ProjectReference Include="..\Modules\Progress\ArenaApi.Modules.Progress.Core\ArenaApi.Modules.Progress.Core.csproj" />
+    <ProjectReference Include="..\Modules\Progress\ArenaApi.Modules.Progress.Infrastructure.Postgres\ArenaApi.Modules.Progress.Infrastructure.Postgres.csproj" />
   </ItemGroup>
 </Project>

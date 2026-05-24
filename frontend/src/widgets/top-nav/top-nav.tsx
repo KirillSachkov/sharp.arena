@@ -96,7 +96,7 @@ export function TopNav() {
             href="/profile"
             className="inline-flex items-center gap-1.5 rounded-lg border border-border-subtle bg-bg-panel/60 py-1 pl-1 pr-1.5 transition-colors hover:border-primary/40 sm:gap-3 sm:pr-2.5"
           >
-            <PlayerAvatar size={32} />
+            <PlayerAvatar src={MOCK_PLAYER.avatarAsset} size={32} />
             <div className="hidden min-w-0 leading-tight sm:block">
               <p className="text-xs font-semibold text-text">
                 {MOCK_PLAYER.handle}

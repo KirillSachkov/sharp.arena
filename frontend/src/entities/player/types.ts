@@ -26,6 +26,7 @@ export type PlayerSummary = {
 export const MOCK_PLAYER: PlayerSummary = {
   id: "code-ninja",
   handle: "CodeNinja",
+  avatarAsset: "/art/avatar/code-ninja.webp",
   level: 24,
   currentXp: 4230,
   nextLevelXp: 6000,
