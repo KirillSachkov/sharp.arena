@@ -19,5 +19,6 @@
   <ItemGroup>
     <ProjectReference Include="..\ArenaApi.Core\ArenaApi.Core.csproj" />
     <ProjectReference Include="..\ArenaApi.Infrastructure\ArenaApi.Infrastructure.csproj" />
+    <ProjectReference Include="..\ArenaApi.SharedKernel\ArenaApi.SharedKernel.csproj" />
   </ItemGroup>
 </Project>

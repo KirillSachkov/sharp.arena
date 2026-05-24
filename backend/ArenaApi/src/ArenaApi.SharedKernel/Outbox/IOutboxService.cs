@@ -1,4 +1,4 @@
-namespace ArenaApi.Core.Shared.Outbox;
+namespace ArenaApi.SharedKernel.Outbox;
 
 /// Per-module facade over Wolverine's IDbContextOutbox<TDbContext>. Modules
 /// inject this rather than depending on Wolverine types directly, so that

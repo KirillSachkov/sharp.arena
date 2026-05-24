@@ -1,6 +1,6 @@
 using ArenaApi.Contracts.Content;
 using ArenaApi.Core.Modules.Content.Public;
-using ArenaApi.Core.Shared.Errors;
+using ArenaApi.SharedKernel.Errors;
 using CSharpFunctionalExtensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;

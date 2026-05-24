@@ -1,4 +1,4 @@
-namespace ArenaApi.Core;
+namespace ArenaApi.SharedKernel;
 
 public static class ConnectionStringNames
 {

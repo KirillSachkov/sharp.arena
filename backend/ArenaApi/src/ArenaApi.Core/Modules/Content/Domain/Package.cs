@@ -1,6 +1,6 @@
 using ArenaApi.Core.Modules.Content.Domain.DomainEvents;
-using ArenaApi.Core.Shared.DomainEvents;
-using ArenaApi.Core.Shared.Errors;
+using ArenaApi.SharedKernel.DomainEvents;
+using ArenaApi.SharedKernel.Errors;
 using CSharpFunctionalExtensions;
 
 namespace ArenaApi.Core.Modules.Content.Domain;

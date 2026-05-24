@@ -18,5 +18,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ArenaApi.Contracts\ArenaApi.Contracts.csproj" />
+    <ProjectReference Include="..\ArenaApi.SharedKernel\ArenaApi.SharedKernel.csproj" />
   </ItemGroup>
 </Project>

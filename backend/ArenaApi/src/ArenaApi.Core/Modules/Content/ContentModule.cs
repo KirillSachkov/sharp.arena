@@ -1,7 +1,7 @@
 using ArenaApi.Core.Modules.Content.Features.CreatePackage;
 using ArenaApi.Core.Modules.Content.Infrastructure;
 using ArenaApi.Core.Modules.Content.Public;
-using ArenaApi.Core.Shared.Time;
+using ArenaApi.SharedKernel.Time;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
@@ -18,7 +18,7 @@ public static class ContentModule
     {
         services.AddDbContext<ContentDbContext>(options =>
             options.UseNpgsql(
-                configuration.GetConnectionString(ArenaApi.Core.ConnectionStringNames.Database),
+                configuration.GetConnectionString(ArenaApi.SharedKernel.ConnectionStringNames.Database),
                 npgsql => npgsql.MigrationsHistoryTable(
                     "__EFMigrationsHistory",
                     ContentDbContext.SchemaName)));

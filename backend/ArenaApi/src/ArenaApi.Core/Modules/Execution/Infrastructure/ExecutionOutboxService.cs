@@ -1,4 +1,4 @@
-using ArenaApi.Core.Shared.Outbox;
+using ArenaApi.SharedKernel.Outbox;
 using Wolverine.EntityFrameworkCore;
 
 namespace ArenaApi.Core.Modules.Execution.Infrastructure;

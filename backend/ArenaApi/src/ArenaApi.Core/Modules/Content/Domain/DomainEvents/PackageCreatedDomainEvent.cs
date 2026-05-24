@@ -1,4 +1,4 @@
-using ArenaApi.Core.Shared.DomainEvents;
+using ArenaApi.SharedKernel.DomainEvents;
 
 namespace ArenaApi.Core.Modules.Content.Domain.DomainEvents;
 

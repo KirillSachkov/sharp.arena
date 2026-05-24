@@ -1,4 +1,4 @@
-namespace ArenaApi.Core.Shared.Time;
+namespace ArenaApi.SharedKernel.Time;
 
 public interface IClock
 {

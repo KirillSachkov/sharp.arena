@@ -13,7 +13,7 @@ public static class ExecutionModule
     {
         services.AddDbContext<ExecutionDbContext>(options =>
             options.UseNpgsql(
-                configuration.GetConnectionString(ArenaApi.Core.ConnectionStringNames.Database),
+                configuration.GetConnectionString(ArenaApi.SharedKernel.ConnectionStringNames.Database),
                 npgsql => npgsql.MigrationsHistoryTable(
                     "__EFMigrationsHistory",
                     ExecutionDbContext.SchemaName)));

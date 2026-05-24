@@ -1,4 +1,4 @@
-namespace ArenaApi.Core.Shared.DomainEvents;
+namespace ArenaApi.SharedKernel.DomainEvents;
 
 public interface IHasDomainEvents
 {

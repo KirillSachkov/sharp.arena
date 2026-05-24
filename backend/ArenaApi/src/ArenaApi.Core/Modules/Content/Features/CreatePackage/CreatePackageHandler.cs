@@ -2,8 +2,8 @@ using ArenaApi.Core.Modules.Content.Domain;
 using ArenaApi.Core.Modules.Content.Infrastructure;
 using ArenaApi.Core.Modules.Content.Public;
 using ArenaApi.Core.Modules.Content.Public.IntegrationEvents;
-using ArenaApi.Core.Shared.Errors;
-using ArenaApi.Core.Shared.Time;
+using ArenaApi.SharedKernel.Errors;
+using ArenaApi.SharedKernel.Time;
 using CSharpFunctionalExtensions;
 using Microsoft.EntityFrameworkCore;
 

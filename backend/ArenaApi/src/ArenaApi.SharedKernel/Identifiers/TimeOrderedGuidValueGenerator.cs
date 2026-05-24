@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.ValueGeneration;
 
-namespace ArenaApi.Core.Shared.Identifiers;
+namespace ArenaApi.SharedKernel.Identifiers;
 
 public sealed class TimeOrderedGuidValueGenerator : ValueGenerator<Guid>
 {

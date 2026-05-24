@@ -1,5 +1,6 @@
 <Solution>
   <Folder Name="/ArenaApi/">
+    <Project Path="ArenaApi/src/ArenaApi.SharedKernel/ArenaApi.SharedKernel.csproj" />
     <Project Path="ArenaApi/src/ArenaApi.Contracts/ArenaApi.Contracts.csproj" />
     <Project Path="ArenaApi/src/ArenaApi.Core/ArenaApi.Core.csproj" />
     <Project Path="ArenaApi/src/ArenaApi.Infrastructure/ArenaApi.Infrastructure.csproj" />

@@ -1,4 +1,4 @@
-namespace ArenaApi.Core.Shared.Errors;
+namespace ArenaApi.SharedKernel.Errors;
 
 public sealed record Error(string Code, string Message)
 {

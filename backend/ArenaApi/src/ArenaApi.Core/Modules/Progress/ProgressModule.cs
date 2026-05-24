@@ -13,7 +13,7 @@ public static class ProgressModule
     {
         services.AddDbContext<ProgressDbContext>(options =>
             options.UseNpgsql(
-                configuration.GetConnectionString(ArenaApi.Core.ConnectionStringNames.Database),
+                configuration.GetConnectionString(ArenaApi.SharedKernel.ConnectionStringNames.Database),
                 npgsql => npgsql.MigrationsHistoryTable(
                     "__EFMigrationsHistory",
                     ProgressDbContext.SchemaName)));

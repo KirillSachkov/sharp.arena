@@ -1,4 +1,4 @@
-using ArenaApi.Core;
+using ArenaApi.SharedKernel;
 using ArenaApi.Core.Features.Health;
 using ArenaApi.Core.Modules.Content;
 using ArenaApi.Core.Modules.Execution;

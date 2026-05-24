@@ -1,4 +1,4 @@
-using ArenaApi.Core;
+using ArenaApi.SharedKernel;
 using ArenaApi.Core.Modules.Content;
 using Wolverine;
 using Wolverine.EntityFrameworkCore;
