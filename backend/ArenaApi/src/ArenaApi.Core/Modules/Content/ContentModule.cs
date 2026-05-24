@@ -1,7 +1,6 @@
 using ArenaApi.Core.Modules.Content.Features.CreatePackage;
 using ArenaApi.Core.Modules.Content.Infrastructure;
 using ArenaApi.Core.Modules.Content.Public;
-using ArenaApi.SharedKernel.Time;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
@@ -26,7 +25,6 @@ public static class ContentModule
         services.AddScoped<IContentReader, ContentReader>();
         services.AddScoped<ContentOutboxService>();
         services.AddScoped<CreatePackageHandler>();
-        services.AddSingleton<IClock, SystemClock>();
 
         return services;
     }

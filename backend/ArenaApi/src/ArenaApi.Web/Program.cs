@@ -8,6 +8,8 @@ using ArenaApi.Web.Configuration;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddSharedKernel();
+
 // Order matters: modules register their DbContexts first, then UseArenaWolverine
 // wraps them with EF Core transactional middleware (IDbContextOutbox<T> resolves
 // per DbContext at runtime).
