@@ -2,7 +2,6 @@ using ArenaApi.Modules.Content.Contracts;
 using ArenaApi.Modules.Content.Core.Database;
 using ArenaApi.Modules.Content.Infrastructure.Postgres.Database;
 using ArenaApi.SharedKernel;
-using ArenaApi.SharedKernel.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

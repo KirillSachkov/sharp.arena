@@ -1,7 +1,6 @@
 using ArenaApi.Modules.Progress.Core.Database;
 using ArenaApi.Modules.Progress.Infrastructure.Postgres.Database;
 using ArenaApi.SharedKernel;
-using ArenaApi.SharedKernel.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

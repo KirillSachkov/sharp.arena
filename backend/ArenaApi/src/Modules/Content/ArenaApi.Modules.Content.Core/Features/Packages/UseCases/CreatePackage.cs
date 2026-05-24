@@ -6,7 +6,6 @@ using ArenaApi.Modules.Content.Contracts.IntegrationEvents;
 using ArenaApi.Modules.Content.Core.Database;
 using ArenaApi.Modules.Content.Domain;
 using ArenaApi.SharedKernel.Abstractions;
-using ArenaApi.SharedKernel.Database;
 using ArenaApi.SharedKernel.Endpoints;
 using ArenaApi.SharedKernel.Errors;
 using ArenaApi.SharedKernel.Time;

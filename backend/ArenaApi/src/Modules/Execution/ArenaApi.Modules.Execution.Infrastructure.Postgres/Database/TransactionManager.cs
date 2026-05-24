@@ -1,6 +1,6 @@
 using System.Data;
 using System.Data.Common;
-using ArenaApi.SharedKernel.Database;
+using ArenaApi.Modules.Execution.Core.Database;
 using ArenaApi.SharedKernel.Errors;
 using CSharpFunctionalExtensions;
 using Microsoft.EntityFrameworkCore;
