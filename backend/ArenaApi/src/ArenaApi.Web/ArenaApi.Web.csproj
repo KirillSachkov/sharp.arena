@@ -17,8 +17,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ArenaApi.Core\ArenaApi.Core.csproj" />
-    <ProjectReference Include="..\ArenaApi.Infrastructure\ArenaApi.Infrastructure.csproj" />
     <ProjectReference Include="..\ArenaApi.SharedKernel\ArenaApi.SharedKernel.csproj" />
     <ProjectReference Include="..\Modules\IdentityStub\ArenaApi.Modules.IdentityStub.Public\ArenaApi.Modules.IdentityStub.Public.csproj" />
     <ProjectReference Include="..\Modules\IdentityStub\ArenaApi.Modules.IdentityStub.Application\ArenaApi.Modules.IdentityStub.Application.csproj" />

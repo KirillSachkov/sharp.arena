@@ -1,5 +1,5 @@
 using ArenaApi.SharedKernel;
-using ArenaApi.Core.Features.Health;
+using ArenaApi.Web.Health;
 using ArenaApi.Modules.Execution.Infrastructure.Postgres;
 using ArenaApi.Modules.IdentityStub.Infrastructure;
 using ArenaApi.Modules.Progress.Infrastructure.Postgres;

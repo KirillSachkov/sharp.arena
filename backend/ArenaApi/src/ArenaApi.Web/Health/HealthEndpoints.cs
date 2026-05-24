@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 
-namespace ArenaApi.Core.Features.Health;
+namespace ArenaApi.Web.Health;
 
 public static class HealthEndpoints
 {

@@ -55,9 +55,9 @@ public static class WolverineConfiguration
             // runtime for ContentDbContext / ExecutionDbContext / ProgressDbContext.
             opts.UseEntityFrameworkCoreTransactions();
 
-            // Handler discovery: PackageCreatedHandler lives in ArenaApi.Core, not
+            // Handler discovery: handlers live in module Application assemblies, not
             // in the entry assembly (ArenaApi.Web). Wolverine 5.x scans the calling
-            // assembly by default, so we must include Core explicitly.
+            // assembly by default, so we must include each module assembly explicitly.
             opts.Discovery.IncludeAssembly(typeof(ContentApplicationAssemblyMarker).Assembly);
             opts.Discovery.IncludeAssembly(typeof(ProgressApplicationAssemblyMarker).Assembly);
         });

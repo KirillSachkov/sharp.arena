@@ -1,3 +1,3 @@
-namespace ArenaApi.Core.Features.Health;
+namespace ArenaApi.Web.Health;
 
 public sealed record HealthResponse(string Status);
