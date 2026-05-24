@@ -14,8 +14,8 @@ public static class WolverineConfiguration
 
     /// <summary>
     /// Wires Wolverine with Postgres durable storage, RabbitMQ transport,
-    /// the EF Core transactional middleware, and handler discovery for the
-    /// Core assembly.
+    /// the EF Core transactional middleware, and handler discovery for every
+    /// module Application assembly that ships Wolverine handlers.
     /// </summary>
     /// <remarks>
     /// Extends <see cref="IHostApplicationBuilder"/> (which <c>WebApplicationBuilder</c>

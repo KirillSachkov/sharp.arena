@@ -1,11 +1,11 @@
-using ArenaApi.SharedKernel;
-using ArenaApi.Web.Health;
+using ArenaApi.Modules.Content.Application;
+using ArenaApi.Modules.Content.Infrastructure.Postgres;
 using ArenaApi.Modules.Execution.Infrastructure.Postgres;
 using ArenaApi.Modules.IdentityStub.Infrastructure;
 using ArenaApi.Modules.Progress.Infrastructure.Postgres;
-using ArenaApi.Modules.Content.Application;
-using ArenaApi.Modules.Content.Infrastructure.Postgres;
+using ArenaApi.SharedKernel;
 using ArenaApi.Web.Configuration;
+using ArenaApi.Web.Health;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
