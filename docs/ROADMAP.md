@@ -60,6 +60,10 @@ production backend code. No new server endpoints, no DB tables.
 
 ### Phase 2B — Story backend (after Phase 1)
 
+Pre-planning notes / open architecture questions:
+[docs/superpowers/plans/2026-05-24-story-backend-design-brief.md](./superpowers/plans/2026-05-24-story-backend-design-brief.md).
+Walk through those before spawning the implementation plan.
+
 - [ ] `Modules/Story/` skeleton: `Domain/`, `Features/`, `Infrastructure/`,
       `Public/IStoryReader`. NetArchTest rule pins the boundary.
 - [ ] `StoryDbContext` + initial EF migration creating all `arena_story.*`
