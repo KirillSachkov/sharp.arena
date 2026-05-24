@@ -10,12 +10,16 @@ ready by design via `IRunner` / `ITestFormat` / `IContentLoader` abstractions.
   Difference is navigation/UI, not data model.
 - **Multi-language from day 1.** New language = new `runners/<lang>/Dockerfile`
   + `IRunner` implementation. Core engine unchanged.
-- **Modular monolith.** One backend process, but code inside
-  `ArenaApi.Core/Modules/<Content|Execution|Progress|IdentityStub>/` is
-  isolated by NetArchTest rules. Cross-module communication: sync read via
-  `I<Module>Reader`, side-effects via Wolverine + RabbitMQ + Postgres
-  durable outbox. Each module owns its own `DbContext` + Postgres schema.
-  Identity is a hardcoded stub; real SSO comes later.
+- **Modular monolith — modules as projects.** One backend process. Each
+  module is a set of csproj projects (`ArenaApi.Modules.<Name>.{Public,
+  Domain, Application, Infrastructure.Postgres}`), wired into one DI
+  container by `ArenaApi.Web`. Module isolation is compiler-enforced by
+  the `csproj` ProjectReference graph — direct references to another
+  module's internals fail `dotnet build`. Cross-module communication:
+  sync read via `I<Module>Reader` (from `<M>.Public`), side-effects via
+  Wolverine + RabbitMQ + Postgres durable outbox. Each module owns its
+  own `DbContext` + Postgres schema. Identity is a hardcoded stub; real
+  SSO comes later.
 - **RabbitMQ + Redis in infra.** Wolverine routes integration events
   through RabbitMQ even when the consumer is in-process, so extracting a
   module into its own service later is mechanical. Redis is registered
@@ -26,17 +30,20 @@ ready by design via `IRunner` / `ITestFormat` / `IContentLoader` abstractions.
 
 ## Layout
 
-| Path                                            | Owns                                                            |
-| ----------------------------------------------- | --------------------------------------------------------------- |
-| `backend/ArenaApi/src/ArenaApi.Web/`            | Host: `Program.cs`, Wolverine configuration, endpoint mapping   |
-| `backend/ArenaApi/src/ArenaApi.Core/`           | Shared primitives + per-module code (`Modules/<Name>/`)         |
-| `backend/ArenaApi/src/ArenaApi.Contracts/`      | HTTP DTOs (request/response records, no Domain dependency)      |
-| `backend/ArenaApi/src/ArenaApi.Infrastructure/` | Reserved shell for cross-cutting infra (OTel, logging, jobs)    |
-| `frontend/`                                     | Next.js 16 App Router, FSD layers, Tailwind 4                   |
-| `runners/<lang>/`                               | One Dockerfile per supported language. Phase 0 = TODO           |
-| `docker/postgres/`                              | DB init SQL (per-module schemas + extensions)                   |
-| `docs/`                                         | Architecture, visual style, roadmap                             |
-| `.claude/rules/`                                | Conventions auto-loaded by Claude Code                          |
+| Path                                                                                    | Owns                                                                                          |
+| --------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| `backend/ArenaApi/src/ArenaApi.Web/`                                                    | Host: `Program.cs`, Wolverine wiring, Health, module registration                             |
+| `backend/ArenaApi/src/ArenaApi.SharedKernel/`                                           | Cross-cutting primitives (Error, IClock, IDomainEvent, IOutboxService, ConnectionStringNames) |
+| `backend/ArenaApi/src/ArenaApi.Contracts/`                                              | HTTP DTOs (per-module subfolders, no Domain dependency)                                       |
+| `backend/ArenaApi/src/Modules/<Name>/ArenaApi.Modules.<Name>.Public/`                  | Cross-module surface: `IXxxReader`, view DTOs, integration events                             |
+| `backend/ArenaApi/src/Modules/<Name>/ArenaApi.Modules.<Name>.Domain/`                  | Aggregates, value objects, domain events                                                      |
+| `backend/ArenaApi/src/Modules/<Name>/ArenaApi.Modules.<Name>.Application/`             | DbContext, handlers, endpoints, EF entity configs, OutboxService                              |
+| `backend/ArenaApi/src/Modules/<Name>/ArenaApi.Modules.<Name>.Infrastructure.Postgres/` | Migrations, DesignTimeFactory, Reader (Public impl), `Add<Module>Module`                      |
+| `frontend/`                                                                             | Next.js 16 App Router, FSD layers, Tailwind 4                                                 |
+| `runners/<lang>/`                                                                       | One Dockerfile per supported language. Phase 0 = TODO                                         |
+| `docker/postgres/`                                                                      | DB init SQL (per-module schemas + extensions)                                                 |
+| `docs/`                                                                                 | Architecture, visual style, roadmap                                                           |
+| `.claude/rules/`                                                                        | Conventions auto-loaded by Claude Code                                                        |
 
 ## Phases
 
@@ -59,10 +66,12 @@ Detailed checklists in [docs/ROADMAP.md](docs/ROADMAP.md).
 
 - **No upward imports** in `frontend/src/` — enforced by `eslint-plugin-boundaries`.
 - **No cross-slice imports** in `frontend/src/features/` — communicate via `entities/` or `shared/`.
-- **Module boundaries are enforced via `NetArchTest`.** Cross-module
-  references must go through `Modules/<Module>/Public/`. Direct references
-  to `<Other>DbContext`, `<Other>.Domain`, `<Other>.Features`, or
-  `<Other>.Infrastructure` will fail the architecture test suite.
+- **Module boundaries are compiler-enforced** via the `csproj`
+  ProjectReference graph. Each module ships as a set of separate
+  projects; direct references to another module's `Domain`,
+  `Application`, or `Infrastructure.Postgres` assembly fail
+  `dotnet build`. The only legal cross-module reference is to another
+  module's `Public` project.
 - **`Guid.CreateVersion7()`**, never `Guid.NewGuid()`, in production code. Banned via `BannedSymbols.txt`.
 - **No `Console.Write*`** in production code — use `ILogger`. Banned.
 - **`Result<T, Error>` for business outcomes**, not exceptions. Domain throws are bugs.
