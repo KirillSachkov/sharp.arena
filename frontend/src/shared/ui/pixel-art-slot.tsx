@@ -37,7 +37,6 @@ export function PixelArtSlot({
         src={src}
         alt={alt ?? slot}
         className={cn("pixel-art block", className)}
-        style={dims}
         width={dims.width}
         height={dims.height}
       />

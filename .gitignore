@@ -6,6 +6,10 @@
 # Claude Code — the entire .claude/ directory is local-only (this repo is public).
 .claude/
 .worktrees/
+.claire/
+
+# Local design scratchpads — large binaries, keep out of git
+*.excalidraw
 
 # NuGet credentials
 nuget.config

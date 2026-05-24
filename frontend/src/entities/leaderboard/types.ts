@@ -23,6 +23,7 @@ export const MOCK_TOP_PLAYERS: LeaderboardEntry[] = [
     playerId: "code-ninja",
     handle: "CodeNinja",
     avatarSlot: "avatar/code-ninja",
+    avatarAsset: "/art/avatar/code-ninja.webp",
     solved: 512,
     xp: 11230,
     isMe: true,

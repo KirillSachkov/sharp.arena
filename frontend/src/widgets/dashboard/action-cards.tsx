@@ -41,12 +41,14 @@ function ModeCard({
   const accent =
     tone === "gold"
       ? {
-          frame: "border-accent-gold/60 hover:border-accent-gold/80",
+          frame:
+            "border-accent-gold/60 hover:border-accent-gold/80 hover:shadow-[0_0_40px_-18px_var(--color-accent-gold),inset_0_1px_0_0_rgba(255,255,255,0.04)]",
           title: "text-accent-gold",
           cta: "bg-accent-gold text-bg-deep hover:bg-accent-gold/85",
         }
       : {
-          frame: "border-primary/60 hover:border-primary/80",
+          frame:
+            "border-primary/60 hover:border-primary/80 hover:shadow-[0_0_40px_-18px_var(--color-primary),inset_0_1px_0_0_rgba(255,255,255,0.04)]",
           title: "text-primary-soft",
           cta: "bg-primary text-white hover:bg-primary-soft",
         };
@@ -54,7 +56,7 @@ function ModeCard({
   return (
     <Panel
       className={cn(
-        "group relative isolate min-h-[260px] overflow-hidden border transition-colors",
+        "group relative isolate min-h-[260px] overflow-hidden border transition-all duration-300 ease-out hover:-translate-y-0.5",
         accent.frame,
       )}
     >
@@ -66,7 +68,7 @@ function ModeCard({
           size={128}
           aspect="banner"
           label={title}
-          className="size-full rounded-none border-0"
+          className="size-full rounded-none border-0 object-cover"
         />
       </div>
       {/* Legibility gradient — dark on the left, transparent on the right. */}
@@ -121,6 +123,7 @@ export function ActionCards() {
         href="/arena"
         cta="Войти в арену"
         bannerSlot="banner/arena"
+        bannerAsset="/art/banner/arena.webp"
         bullets={[
           { icon: <Layers className="size-4" />, label: "Подборки задач и фильтры" },
           { icon: <Filter className="size-4" />, label: "Уровни сложности" },
@@ -135,6 +138,7 @@ export function ActionCards() {
         href="/story"
         cta="Продолжить путь"
         bannerSlot="banner/story"
+        bannerAsset="/art/banner/story.webp"
         bullets={[
           { icon: <BookOpen className="size-4" />, label: "Обучение по главам" },
           { icon: <Map className="size-4" />, label: "Пошаговое освоение C#" },

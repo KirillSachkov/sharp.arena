@@ -56,7 +56,7 @@ export default function ProfilePage() {
       <Panel className="overflow-hidden">
         <PanelHeader title="Profile" />
         <PanelBody className="flex flex-col gap-5 md:flex-row md:items-center">
-          <PlayerAvatar size={96} />
+          <PlayerAvatar src={MOCK_PLAYER.avatarAsset} size={96} />
           <div className="min-w-0 flex-1">
             <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-text-muted">
               Player
