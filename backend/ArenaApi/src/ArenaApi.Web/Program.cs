@@ -18,7 +18,7 @@ builder.Services.AddSharedKernel();
 // wraps them with EF Core transactional middleware (IDbContextOutbox<T> resolves
 // per DbContext at runtime).
 builder.Services
-    .AddIdentityStubModule(builder.Configuration)
+    .AddIdentityStubInfrastructure(builder.Configuration)
     .AddContentInfrastructure(builder.Configuration)
     .AddExecutionInfrastructure(builder.Configuration)
     .AddProgressInfrastructure(builder.Configuration);

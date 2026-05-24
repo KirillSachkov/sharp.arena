@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup>
     <ProjectReference Include="..\..\..\ArenaApi.SharedKernel\ArenaApi.SharedKernel.csproj" />
-    <ProjectReference Include="..\ArenaApi.Modules.IdentityStub.Public\ArenaApi.Modules.IdentityStub.Public.csproj" />
+    <ProjectReference Include="..\ArenaApi.Modules.IdentityStub.Contracts\ArenaApi.Modules.IdentityStub.Contracts.csproj" />
   </ItemGroup>
 </Project>

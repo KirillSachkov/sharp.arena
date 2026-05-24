@@ -1,5 +1,5 @@
-using ArenaApi.Modules.IdentityStub.Application;
-using ArenaApi.Modules.IdentityStub.Public;
+using ArenaApi.Modules.IdentityStub.Core;
+using ArenaApi.Modules.IdentityStub.Contracts;
 using Microsoft.Extensions.Options;
 
 namespace ArenaApi.Modules.IdentityStub.Infrastructure;

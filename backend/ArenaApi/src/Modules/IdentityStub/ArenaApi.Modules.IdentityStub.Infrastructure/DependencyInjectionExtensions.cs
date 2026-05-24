@@ -1,13 +1,13 @@
-using ArenaApi.Modules.IdentityStub.Application;
-using ArenaApi.Modules.IdentityStub.Public;
+using ArenaApi.Modules.IdentityStub.Contracts;
+using ArenaApi.Modules.IdentityStub.Core;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace ArenaApi.Modules.IdentityStub.Infrastructure;
 
-public static class IdentityStubModule
+public static class DependencyInjectionExtensions
 {
-    public static IServiceCollection AddIdentityStubModule(
+    public static IServiceCollection AddIdentityStubInfrastructure(
         this IServiceCollection services,
         IConfiguration configuration)
     {

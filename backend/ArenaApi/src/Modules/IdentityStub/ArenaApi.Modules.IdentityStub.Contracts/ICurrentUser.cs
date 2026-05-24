@@ -1,4 +1,4 @@
-namespace ArenaApi.Modules.IdentityStub.Public;
+namespace ArenaApi.Modules.IdentityStub.Contracts;
 
 public interface ICurrentUser
 {

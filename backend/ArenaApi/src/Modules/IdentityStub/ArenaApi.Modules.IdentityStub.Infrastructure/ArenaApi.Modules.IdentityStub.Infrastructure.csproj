@@ -5,7 +5,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\ArenaApi.SharedKernel\ArenaApi.SharedKernel.csproj" />
-    <ProjectReference Include="..\ArenaApi.Modules.IdentityStub.Public\ArenaApi.Modules.IdentityStub.Public.csproj" />
-    <ProjectReference Include="..\ArenaApi.Modules.IdentityStub.Application\ArenaApi.Modules.IdentityStub.Application.csproj" />
+    <ProjectReference Include="..\ArenaApi.Modules.IdentityStub.Contracts\ArenaApi.Modules.IdentityStub.Contracts.csproj" />
+    <ProjectReference Include="..\ArenaApi.Modules.IdentityStub.Core\ArenaApi.Modules.IdentityStub.Core.csproj" />
   </ItemGroup>
 </Project>
