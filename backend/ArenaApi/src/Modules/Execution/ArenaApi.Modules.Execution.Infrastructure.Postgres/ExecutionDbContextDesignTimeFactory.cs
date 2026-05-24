@@ -1,7 +1,8 @@
+using ArenaApi.Modules.Execution.Application;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 
-namespace ArenaApi.Core.Modules.Execution.Infrastructure;
+namespace ArenaApi.Modules.Execution.Infrastructure.Postgres;
 
 internal sealed class ExecutionDbContextDesignTimeFactory : IDesignTimeDbContextFactory<ExecutionDbContext>
 {

@@ -1,6 +1,6 @@
 using ArenaApi.SharedKernel;
 using ArenaApi.Core.Features.Health;
-using ArenaApi.Core.Modules.Execution;
+using ArenaApi.Modules.Execution.Infrastructure.Postgres;
 using ArenaApi.Core.Modules.IdentityStub;
 using ArenaApi.Core.Modules.Progress;
 using ArenaApi.Modules.Content.Application;

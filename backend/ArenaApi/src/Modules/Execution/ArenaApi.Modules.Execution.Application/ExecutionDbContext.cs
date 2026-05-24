@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 
-namespace ArenaApi.Core.Modules.Execution.Infrastructure;
+namespace ArenaApi.Modules.Execution.Application;
 
 public sealed class ExecutionDbContext(DbContextOptions<ExecutionDbContext> options) : DbContext(options)
 {
@@ -11,7 +11,7 @@ public sealed class ExecutionDbContext(DbContextOptions<ExecutionDbContext> opti
         modelBuilder.HasDefaultSchema(SchemaName);
         modelBuilder.ApplyConfigurationsFromAssembly(
             typeof(ExecutionDbContext).Assembly,
-            t => t.Namespace?.StartsWith("ArenaApi.Core.Modules.Execution.Infrastructure.Configurations", StringComparison.Ordinal) == true);
+            t => t.Namespace?.StartsWith("ArenaApi.Modules.Execution.Application.Configurations", StringComparison.Ordinal) == true);
         base.OnModelCreating(modelBuilder);
     }
 }

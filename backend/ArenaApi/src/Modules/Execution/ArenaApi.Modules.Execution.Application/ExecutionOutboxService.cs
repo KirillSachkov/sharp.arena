@@ -1,9 +1,9 @@
 using ArenaApi.SharedKernel.Outbox;
 using Wolverine.EntityFrameworkCore;
 
-namespace ArenaApi.Core.Modules.Execution.Infrastructure;
+namespace ArenaApi.Modules.Execution.Application;
 
-internal sealed class ExecutionOutboxService(IDbContextOutbox<ExecutionDbContext> outbox) : IOutboxService
+public sealed class ExecutionOutboxService(IDbContextOutbox<ExecutionDbContext> outbox) : IOutboxService
 {
     public async Task PublishAsync<T>(T message, CancellationToken cancellationToken = default) where T : class
     {

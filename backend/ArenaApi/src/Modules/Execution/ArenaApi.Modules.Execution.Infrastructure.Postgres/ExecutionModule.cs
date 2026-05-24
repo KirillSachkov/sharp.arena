@@ -1,9 +1,10 @@
-using ArenaApi.Core.Modules.Execution.Infrastructure;
+using ArenaApi.Modules.Execution.Application;
+using ArenaApi.SharedKernel;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace ArenaApi.Core.Modules.Execution;
+namespace ArenaApi.Modules.Execution.Infrastructure.Postgres;
 
 public static class ExecutionModule
 {
@@ -13,7 +14,7 @@ public static class ExecutionModule
     {
         services.AddDbContext<ExecutionDbContext>(options =>
             options.UseNpgsql(
-                configuration.GetConnectionString(ArenaApi.SharedKernel.ConnectionStringNames.Database),
+                configuration.GetConnectionString(ConnectionStringNames.Database),
                 npgsql => npgsql.MigrationsHistoryTable(
                     "__EFMigrationsHistory",
                     ExecutionDbContext.SchemaName)));
