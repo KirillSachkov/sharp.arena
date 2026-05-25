@@ -11,4 +11,6 @@ internal sealed class StubCurrentUser(IOptions<IdentityStubOptions> options) : I
             $"{nameof(IdentityStubOptions)}.{nameof(IdentityStubOptions.HardcodedUserId)} is not configured. " +
             "Set IdentityStub:HardcodedUserId in appsettings.")
         : options.Value.HardcodedUserId;
+
+    public bool IsAdmin { get; } = options.Value.IsAdmin;
 }
